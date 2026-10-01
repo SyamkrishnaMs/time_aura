@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-  ],
+, "app/models/user.schema.js", "app/components/FeaturedWatches.tsx"  ],
   "exclude": ["node_modules"]
 }
