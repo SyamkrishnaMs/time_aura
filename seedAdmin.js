@@ -1,5 +1,4 @@
 import dotenv from "dotenv";
-
 dotenv.config({ path: ".env.local" });
 
 import bcrypt from "bcryptjs";
@@ -14,9 +13,20 @@ const seedAdmin = async () => {
 
     console.log("MongoDB connected");
 
+    // Get admin credentials from environment variables
+    const adminEmail = process.env.ADMIN_EMAIL;
+    const adminPassword = process.env.ADMIN_PASSWORD;
+
+    // Check whether admin credentials exist
+    if (!adminEmail || !adminPassword) {
+      throw new Error(
+        "ADMIN_EMAIL and ADMIN_PASSWORD are missing in .env.local"
+      );
+    }
+
     // Check whether admin user already exists
     const existingAdmin = await User.findOne({
-      email: "admin@timeaura.com",
+      email: adminEmail,
     });
 
     if (existingAdmin) {
@@ -25,7 +35,7 @@ const seedAdmin = async () => {
 
       // Reset admin password
       existingAdmin.password = await bcrypt.hash(
-        "Admin@123",
+        adminPassword,
         10
       );
 
@@ -42,14 +52,14 @@ const seedAdmin = async () => {
 
     // Hash admin password
     const hashedPassword = await bcrypt.hash(
-      "Admin@123",
+      adminPassword,
       10
     );
 
     // Create new admin
     const admin = await User.create({
       name: "Time Aura Admin",
-      email: "admin@timeaura.com",
+      email: adminEmail,
       password: hashedPassword,
       role: "admin",
     });
