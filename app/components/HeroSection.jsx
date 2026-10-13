@@ -1,33 +1,70 @@
-"use client"
 
-import Link from "next/link";
+"use client";
 
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import axios from "axios";
+
 const HeroSection = () => {
-const router=useRouter();
-const handleExplore=()=>{
-  const token =localStorage.getItem("token");
-  if (token ){
-    router.push("/shop")
-  }
-  else{
-    router.push("/auth")
-  }
-}
+  const router = useRouter();
 
+  const [heroImage, setHeroImage] = useState("");
+  const [loading, setLoading] = useState(true);
 
+  // ==========================================
+  // GET HERO IMAGE FROM MONGODB
+  // ==========================================
+  useEffect(() => {
+    const fetchLandingPage = async () => {
+      try {
+        const response = await axios.get("/api/admin/landing", {
+          withCredentials: true,
+        });
 
+        const image =
+          response.data?.landingPage?.heroImage || "";
+
+        setHeroImage(image);
+      } catch (error) {
+        console.error("FETCH LANDING PAGE ERROR:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLandingPage();
+  }, []);
+
+  // ==========================================
+  // EXPLORE COLLECTION
+  // ==========================================
+  const handleExplore = async () => {
+    try {
+      // JWT is stored in httpOnly cookie,
+      // so localStorage token should NOT be used.
+
+      await axios.get("/api/auth/me", {
+        withCredentials: true,
+      });
+
+      router.push("/shop");
+    } catch (error) {
+      router.push("/auth");
+    }
+  };
 
   return (
     <section className="relative min-h-screen overflow-hidden bg-black">
 
       {/* Background Image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{
-    backgroundImage: "url('/hero_img/hero-watch.jpg')",
-        }}
-      />
+      {!loading && heroImage && (
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: `url("${heroImage}")`,
+          }}
+        />
+      )}
 
       {/* Dark Overlay */}
       <div className="absolute inset-0 bg-black/55" />
@@ -45,6 +82,7 @@ const handleExplore=()=>{
             <h1 className="text-5xl font-light leading-tight text-white md:text-6xl">
               Timeless Elegance
               <br />
+
               <span className="font-normal">
                 on Your Wrist
               </span>
@@ -54,10 +92,15 @@ const handleExplore=()=>{
               Discover watches crafted with precision, premium materials,
               and designs that last a lifetime.
             </p>
-<button onClick={handleExplore}     className="mt-8 inline-flex rounded-full bg-white px-6 py-3 text-xs font-medium text-black transition hover:bg-gray-200"
->Explore Collection</button>
-          </div>
 
+            <button
+              onClick={handleExplore}
+              className="mt-8 inline-flex rounded-full bg-white px-6 py-3 text-xs font-medium text-black transition hover:bg-gray-200"
+            >
+              Explore Collection
+            </button>
+
+          </div>
         </div>
       </div>
 

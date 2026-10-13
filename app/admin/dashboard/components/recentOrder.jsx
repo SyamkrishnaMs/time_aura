@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -21,12 +20,14 @@ export default function RecentOrders() {
   useEffect(() => {
     const fetchRecentOrders = async () => {
       try {
-        const response = await axios.get("/api/admin/orders");
+        const response = await axios.get("/api/admin/order");
 
         console.log("RECENT ORDERS RESPONSE:", response.data);
 
         if (response.data.success) {
           setOrders(response.data.orders || []);
+        } else {
+          setOrders([]);
         }
       } catch (error) {
         console.error(
@@ -78,12 +79,19 @@ export default function RecentOrders() {
       return "bg-red-50 text-red-600";
     }
 
-    if (status === "Accepted" || status === "Ready") {
+    if (
+      status === "Accepted" ||
+      status === "Ready"
+    ) {
       return "bg-blue-50 text-blue-600";
     }
 
     return "bg-yellow-50 text-yellow-600";
   };
+
+  // ==========================================
+  // UI
+  // ==========================================
 
   return (
     <div className="min-h-[320px] rounded-xl border border-black/10 bg-white p-6">
@@ -113,17 +121,21 @@ export default function RecentOrders() {
 
       </div>
 
+
       {/* ==========================================
           LOADING
       ========================================== */}
 
       {loading && (
         <div className="flex h-[220px] items-center justify-center">
+
           <p className="text-sm text-black/40">
             Loading orders...
           </p>
+
         </div>
       )}
+
 
       {/* ==========================================
           NO ORDERS
@@ -152,6 +164,7 @@ export default function RecentOrders() {
         </div>
       )}
 
+
       {/* ==========================================
           ORDERS LIST
       ========================================== */}
@@ -161,18 +174,37 @@ export default function RecentOrders() {
 
           {orders.slice(0, 5).map((order) => {
 
+            // -------------------------------
+            // CUSTOMER NAME
+            // -------------------------------
+
             const customerName =
               order.user?.name ||
               order.shippingAddress?.name ||
               "Customer";
 
+
+            // -------------------------------
+            // TOTAL AMOUNT
+            // -------------------------------
+
             const totalAmount =
               Number(order.totalAmount || 0);
+
+
+            // -------------------------------
+            // ORDER STATUS
+            // -------------------------------
 
             const status =
               order.orderStatus ||
               order.status ||
               "Placed";
+
+
+            // -------------------------------
+            // ITEM COUNT
+            // -------------------------------
 
             const itemCount =
               order.items?.reduce(
@@ -181,13 +213,17 @@ export default function RecentOrders() {
                 0
               ) || 0;
 
+
             return (
               <div
                 key={order._id}
                 className="flex items-center justify-between gap-4 rounded-lg border border-black/5 bg-[#fafafa] px-4 py-3"
               >
 
-                {/* LEFT */}
+                {/* ==================================
+                    CUSTOMER
+                ================================== */}
+
                 <div className="min-w-0">
 
                   <p className="truncate text-sm font-semibold text-black">
@@ -203,7 +239,11 @@ export default function RecentOrders() {
 
                 </div>
 
-                {/* RIGHT */}
+
+                {/* ==================================
+                    AMOUNT + STATUS
+                ================================== */}
+
                 <div className="flex flex-col items-end gap-2">
 
                   <p className="text-sm font-semibold text-black">
@@ -234,4 +274,3 @@ export default function RecentOrders() {
     </div>
   );
 }
-

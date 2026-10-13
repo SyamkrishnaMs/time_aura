@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "app/models/user.schema.js", "app/components/FeaturedWatches.tsx"  ],
+, "app/models/user.schema.js", "app/components/FeaturedWatches.jsx", "app/profile/page.jsx", "app/components/Navbar.jsx", "app/components/HeroSection.jsx", "app/components/Footer.jsx", "app/components/ContactSection.jsx", "app/components/AboutSection.jsx", "app/shop/page.jsx", "app/page.jsx"  ],
   "exclude": ["node_modules"]
 }

@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -9,6 +10,7 @@ import {
   UserX,
   Flag,
   CreditCard,
+  Image,
 } from "lucide-react";
 
 export default function Sidebar({
@@ -24,12 +26,12 @@ export default function Sidebar({
     {
       name: "Products",
       icon: Package,
-      section: "products",
+      section: "product",
     },
     {
       name: "Categories",
       icon: Tags,
-      section: "categories",
+      section: "category",
     },
     {
       name: "Orders",
@@ -56,11 +58,17 @@ export default function Sidebar({
       icon: CreditCard,
       section: "payments",
     },
+    {
+      name: "Landing Page",
+      icon: Image,
+      section: "landing",
+    },
   ];
 
   return (
     <aside className="fixed left-0 top-0 h-screen w-64 bg-black p-5 text-white">
-
+      
+      {/* Logo */}
       <div className="mb-8">
         <h1 className="text-xl font-semibold">
           Time Aura
@@ -71,8 +79,8 @@ export default function Sidebar({
         </p>
       </div>
 
+      {/* Menu */}
       <nav className="space-y-1">
-
         {menuItems.map((item) => {
           const Icon = item.icon;
 
@@ -98,7 +106,6 @@ export default function Sidebar({
             </button>
           );
         })}
-
       </nav>
 
     </aside>

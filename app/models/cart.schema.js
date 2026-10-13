@@ -17,6 +17,12 @@ const cartSchema = new mongoose.Schema(
           required: true,
         },
 
+        size: {
+          type: String,
+          enum: ["Small", "Medium", "Large"],
+          required: true,
+        },
+
         quantity: {
           type: Number,
           required: true,

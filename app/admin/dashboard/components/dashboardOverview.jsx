@@ -38,7 +38,7 @@ export default function DashboardOverview() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const response = await axios.get("/api/admin/stats");
+        const response = await axios.get("/api/admin/status");
 
         console.log("ADMIN STATS RESPONSE:", response.data);
 

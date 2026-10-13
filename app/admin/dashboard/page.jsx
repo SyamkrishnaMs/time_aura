@@ -6,9 +6,15 @@ import Sidebar from "./components/sidebar.jsx";
 import DashboardOverview from "./components/dashboardOverview.jsx";
 import Users from "./components/users.jsx";
 import BlockedUsers from "./components/blockedUsers.jsx";
+import ProductManagement from "./components/product.jsx";
+import Category from "./components/category.jsx";
+import Orders from "./components/orders.jsx";
+import Payment from "./components/payment.jsx";
+import LandingPage from "./components/landingPage.jsx";
 
 export default function AdminDashboard() {
-  const [activeSection, setActiveSection] = useState("dashboard");
+  const [activeSection, setActiveSection] =
+    useState("dashboard");
 
   return (
     <div className="min-h-screen bg-[#f8f8f1]">
@@ -32,6 +38,20 @@ export default function AdminDashboard() {
           <BlockedUsers />
         )}
 
+        {activeSection === "product" && (
+          <ProductManagement />
+        )}
+
+        {activeSection === "category" && (
+          <Category />
+        )}
+        {activeSection === "orders" && (
+  <Orders />
+)}
+{activeSection === "payments" && (
+  <Payment />
+)}
+{activeSection === "landing" && <LandingPage />}
       </main>
 
     </div>
