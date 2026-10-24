@@ -1,4 +1,3 @@
-
 "use client";
 
 import {
@@ -6,6 +5,7 @@ import {
   ShoppingBag,
   ArrowRight,
   Star,
+  Tag,
 } from "lucide-react";
 
 import Image from "next/image";
@@ -36,16 +36,10 @@ export default function FeaturedWatches() {
       fetchWishlist();
     };
 
-    window.addEventListener(
-      "wishlistUpdated",
-      handleWishlistUpdated
-    );
+    window.addEventListener("wishlistUpdated", handleWishlistUpdated);
 
     return () => {
-      window.removeEventListener(
-        "wishlistUpdated",
-        handleWishlistUpdated
-      );
+      window.removeEventListener("wishlistUpdated", handleWishlistUpdated);
     };
   }, []);
 
@@ -54,17 +48,11 @@ export default function FeaturedWatches() {
     try {
       const response = await axios.get("/api/admin");
 
-      if (
-        response.data.success &&
-        response.data.videoUrl
-      ) {
+      if (response.data.success && response.data.videoUrl) {
         setPromoVideo(response.data.videoUrl);
       }
     } catch (error) {
-      console.log(
-        "Video fetch error:",
-        error.response?.data || error
-      );
+      console.log("Video fetch error:", error.response?.data || error);
     }
   };
 
@@ -77,29 +65,20 @@ export default function FeaturedWatches() {
         setProducts(response.data.products || []);
       }
     } catch (error) {
-      console.log(
-        "Product fetch error:",
-        error.response?.data || error
-      );
+      console.log("Product fetch error:", error.response?.data || error);
     }
   };
 
   // FETCH WISHLIST
   const fetchWishlist = async () => {
     try {
-      const response = await axios.get(
-        "/api/wishlist",
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await axios.get("/api/wishlist", {
+        withCredentials: true,
+      });
 
       if (response.data.success) {
-        const ids = (response.data.wishlist || []).map(
-          (item) =>
-            typeof item === "object"
-              ? item._id
-              : item
+        const ids = (response.data.wishlist || []).map((item) =>
+          typeof item === "object" ? item._id : item
         );
 
         setWishlist(ids);
@@ -112,16 +91,14 @@ export default function FeaturedWatches() {
   // TOGGLE WISHLIST
   const toggleWishlist = async (productId) => {
     const alreadyWishlisted = wishlist.some(
-      (id) =>
-        id?.toString() === productId?.toString()
+      (id) => id?.toString() === productId?.toString()
     );
 
     // Optimistic UI
     setWishlist((current) => {
       if (alreadyWishlisted) {
         return current.filter(
-          (id) =>
-            id?.toString() !== productId?.toString()
+          (id) => id?.toString() !== productId?.toString()
         );
       }
 
@@ -139,8 +116,7 @@ export default function FeaturedWatches() {
         if (response.data.action === "added") {
           setWishlist((current) =>
             current.some(
-              (id) =>
-                id?.toString() === productId?.toString()
+              (id) => id?.toString() === productId?.toString()
             )
               ? current
               : [...current, productId]
@@ -150,31 +126,26 @@ export default function FeaturedWatches() {
         if (response.data.action === "removed") {
           setWishlist((current) =>
             current.filter(
-              (id) =>
-                id?.toString() !== productId?.toString()
+              (id) => id?.toString() !== productId?.toString()
             )
           );
         }
 
-        window.dispatchEvent(
-          new Event("wishlistUpdated")
-        );
+        window.dispatchEvent(new Event("wishlistUpdated"));
       }
     } catch (error) {
       // Rollback optimistic update
       setWishlist((current) => {
         if (alreadyWishlisted) {
           return current.some(
-            (id) =>
-              id?.toString() === productId?.toString()
+            (id) => id?.toString() === productId?.toString()
           )
             ? current
             : [...current, productId];
         }
 
         return current.filter(
-          (id) =>
-            id?.toString() !== productId?.toString()
+          (id) => id?.toString() !== productId?.toString()
         );
       });
 
@@ -183,10 +154,7 @@ export default function FeaturedWatches() {
         return;
       }
 
-      console.log(
-        "Wishlist error:",
-        error.response?.data || error
-      );
+      console.log("Wishlist error:", error.response?.data || error);
     }
   };
 
@@ -221,9 +189,7 @@ export default function FeaturedWatches() {
     }
 
     const colorToAdd =
-      availableColors.length > 0
-        ? availableColors[0]
-        : "";
+      availableColors.length > 0 ? availableColors[0] : "";
 
     try {
       const response = await axios.post(
@@ -243,9 +209,7 @@ export default function FeaturedWatches() {
           [productId]: "Added to cart",
         }));
 
-        window.dispatchEvent(
-          new Event("cartUpdated")
-        );
+        window.dispatchEvent(new Event("cartUpdated"));
 
         setTimeout(() => {
           setCartMessage((prev) => {
@@ -264,182 +228,219 @@ export default function FeaturedWatches() {
       setCartMessage((prev) => ({
         ...prev,
         [productId]:
-          error.response?.data?.message ||
-          "Unable to add to cart",
+          error.response?.data?.message || "Unable to add to cart",
       }));
     }
   };
 
   return (
-    <section
-      id="feature"
-      className="bg-[#f8f8f1] px-4 py-8 md:px-10 md:py-12 lg:px-16"
-    >
-      <div className="mx-auto max-w-7xl">
+    <>
+      <style jsx global>{`
+        /* Golden blinking border animation */
+        @keyframes borderBlink {
+          0%, 100% {
+            border-color: rgba(234, 179, 8, 0.8);
+            box-shadow: 0 0 15px rgba(234, 179, 8, 0.3), 0 8px 25px rgba(0, 0, 0, 0.2);
+          }
+          50% {
+            border-color: rgba(234, 179, 8, 0.25);
+            box-shadow: 0 0 5px rgba(234, 179, 8, 0.1), 0 8px 25px rgba(0, 0, 0, 0.2);
+          }
+        }
 
-        {/* PROMO VIDEO */}
-        {promoVideo && (
-          <div className="relative mb-9 overflow-hidden rounded-2xl border border-black/10 bg-black shadow-[0_15px_40px_rgba(0,0,0,0.12)]">
-            <video
-              src={promoVideo}
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="h-[180px] w-full object-cover opacity-90 sm:h-[260px] md:h-[340px]"
-            />
+        /* Gold Price Tag Blinking Animation */
+        @keyframes goldPriceBlink {
+          0%, 100% {
+            background-color: #eab308;
+            color: #000000;
+            box-shadow: 0 0 18px rgba(234, 179, 8, 0.9), 0 0 35px rgba(234, 179, 8, 0.5);
+            transform: scale(1);
+          }
+          50% {
+            background-color: #ca8a04;
+            color: #ffffff;
+            box-shadow: 0 0 6px rgba(202, 138, 4, 0.4);
+            transform: scale(0.97);
+          }
+        }
 
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/10" />
+        .gold-blink-card {
+          animation: borderBlink 2.5s infinite ease-in-out;
+        }
 
-            <div className="absolute left-4 top-4 md:left-6 md:top-6">
-              <span className="rounded-full border border-white/20 bg-black/50 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-white backdrop-blur-md">
-                Featured Collection
-              </span>
+        .gold-price-blink {
+          animation: goldPriceBlink 1.8s infinite ease-in-out;
+        }
+      `}</style>
+
+      <section
+        id="feature"
+        className="bg-[#f8f8f1] px-4 py-10 sm:px-6 md:px-10 md:py-14 lg:px-16"
+      >
+        <div className="mx-auto max-w-7xl">
+
+          {/* PROMO VIDEO */}
+          {promoVideo && (
+            <div className="relative mb-10 overflow-hidden rounded-2xl border border-black/10 bg-black shadow-xl">
+              <video
+                src={promoVideo}
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="h-[190px] w-full object-cover sm:h-[280px] md:h-[360px]"
+              />
+
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
+
+              <div className="absolute left-4 top-4 sm:left-6 sm:top-6">
+                <span className="rounded-full border border-white/20 bg-black/50 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-white backdrop-blur-md">
+                  Featured Collection
+                </span>
+              </div>
             </div>
+          )}
+
+          {/* SECTION HEADER */}
+          <div className="mb-8 flex items-end justify-between gap-4">
+            <div>
+              <p className="mb-2 text-xs font-bold uppercase tracking-[0.25em] text-gray-500 sm:text-sm">
+                The Time Aura Collection
+              </p>
+
+              <h2 className="font-serif text-3xl font-bold tracking-tight text-black sm:text-4xl md:text-5xl">
+                Featured Watches
+              </h2>
+
+              <div className="mt-4 h-1 w-16 rounded-full bg-black" />
+            </div>
+
+            <Link
+              href="/shop"
+              className="hidden items-center gap-2 border-b-2 border-black pb-2 text-sm font-bold uppercase tracking-[0.12em] text-black transition-all hover:gap-4 md:flex"
+            >
+              View All
+              <ArrowRight size={18} />
+            </Link>
           </div>
-        )}
 
-        {/* SECTION HEADER */}
-        <div className="mb-6 flex items-end justify-between">
-          <div>
-            <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.25em] text-gray-500">
-              The Time Aura Collection
-            </p>
+          {/* PRODUCTS GRID */}
+          {products.length === 0 ? (
+            <div className="rounded-2xl border border-black/10 bg-white py-16 text-center">
+              <p className="font-serif text-2xl font-semibold text-gray-700">
+                No watches available
+              </p>
+              <p className="mt-3 text-base text-gray-500">
+                Our collection is being updated.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {products.slice(0, 8).map((product) => {
+                const isWishlisted = wishlist.some(
+                  (id) => id && id.toString() === product._id?.toString()
+                );
 
-            <h2 className="font-serif text-3xl font-medium tracking-tight text-black md:text-4xl lg:text-5xl">
-              Featured Watches
-            </h2>
+                // PRICES CALCULATIONS
+                const offerPrice =
+                  product.offerPrice ??
+                  product.discountPrice ??
+                  product.price;
 
-            <div className="mt-3 h-px w-12 bg-black" />
-          </div>
+                const originalPrice =
+                  product.originalPrice ??
+                  product.mrp ??
+                  (product.offerPrice || product.discountPrice ? product.price : null);
 
-          <Link
-            href="/shop"
-            className="hidden items-center gap-2 border-b border-black pb-1 text-sm font-semibold uppercase tracking-[0.12em] text-black transition-all hover:gap-3 md:flex"
-          >
-            View All
-            <ArrowRight size={16} />
-          </Link>
-        </div>
+                const hasOfferPrice =
+                  offerPrice !== null &&
+                  offerPrice !== undefined &&
+                  offerPrice !== "" &&
+                  Number.isFinite(Number(offerPrice));
 
-        {/* PRODUCTS */}
-        {products.length === 0 ? (
-          <div className="rounded-2xl border border-black/10 bg-white py-16 text-center">
-            <p className="font-serif text-xl text-gray-700">
-              No watches available
-            </p>
+                const hasDiscount =
+                  hasOfferPrice &&
+                  originalPrice &&
+                  Number(originalPrice) > Number(offerPrice);
 
-            <p className="mt-2 text-sm text-gray-400">
-              Our collection is being updated.
-            </p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4 lg:grid-cols-4">
+                // IMAGE
+                const rawImage =
+                  Array.isArray(product.images) && product.images.length > 0
+                    ? product.images[0]
+                    : product.imagePath || product.image;
 
-            {products.slice(0, 8).map((product) => {
-              // WISHLIST
-              const isWishlisted = wishlist.some(
-                (id) =>
-                  id &&
-                  id.toString() === product._id?.toString()
-              );
+                const imageSrc =
+                  typeof rawImage === "string" && rawImage.trim()
+                    ? rawImage.trim()
+                    : null;
 
-              // PRICE
-              const offerPrice =
-                product.offerPrice ??
-                product.discountPrice ??
-                product.price;
+                // SIZES & COLORS
+                const availableSizes = Array.isArray(product.size)
+                  ? product.size
+                  : product.size
+                  ? String(product.size)
+                      .split(",")
+                      .map((s) => s.trim())
+                      .filter(Boolean)
+                  : [];
 
-              const originalPrice =
-                product.originalPrice ??
-                product.price ??
-                product.mrp ??
-                null;
+                const availableColors = Array.isArray(product.colors)
+                  ? product.colors
+                  : product.colors
+                  ? String(product.colors)
+                      .split(",")
+                      .map((c) => c.trim())
+                      .filter(Boolean)
+                  : [];
 
-              const discountPercent =
-                originalPrice &&
-                Number(originalPrice) > Number(offerPrice)
-                  ? Math.round(
-                      ((Number(originalPrice) -
-                        Number(offerPrice)) /
-                        Number(originalPrice)) *
-                        100
-                    )
-                  : null;
+                const rating = product.rating || 4.5;
+                const categoryName = product.category?.name || product.category || "Luxury Watch";
 
-              // IMAGE
-              const rawImage =
-                Array.isArray(product.images) &&
-                product.images.length > 0
-                  ? product.images[0]
-                  : product.imagePath || product.image;
-
-              const imageSrc =
-                typeof rawImage === "string" &&
-                rawImage.trim()
-                  ? rawImage.trim()
-                  : null;
-
-              // SIZES
-              const availableSizes = Array.isArray(
-                product.size
-              )
-                ? product.size
-                : product.size
-                ? String(product.size)
-                    .split(",")
-                    .map((s) => s.trim())
-                    .filter(Boolean)
-                : [];
-
-              // COLOURS
-              const availableColors = Array.isArray(
-                product.colors
-              )
-                ? product.colors
-                : product.colors
-                ? String(product.colors)
-                    .split(",")
-                    .map((c) => c.trim())
-                    .filter(Boolean)
-                : [];
-
-              // RATING
-              const rating = product.rating || 4.2;
-
-              return (
-                <div
-                  key={product._id}
-                  className="group relative flex flex-col overflow-hidden rounded-xl border border-black/[0.06] bg-white shadow-[0_3px_15px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(0,0,0,0.10)]"
-                >
-                  {/* IMAGE */}
-                  <Link
-                    href={`/shop/${product._id}`}
-                    className="block"
+                return (
+                  <article
+                    key={product._id}
+                    className="gold-blink-card group relative flex flex-col overflow-hidden rounded-[24px] bg-[#121418] text-white border-2 transition-all duration-500 hover:-translate-y-2"
                   >
-                    <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#f1f0ea]">
-                      {imageSrc ? (
-                        <Image
-                          src={imageSrc}
-                          alt={product.name || "Watch"}
-                          fill
-                          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                          className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                        />
-                      ) : (
-                        <div className="flex h-full w-full items-center justify-center text-sm text-gray-400">
-                          No Image
+                    {/* TOP VISUAL SECTION WITH IMAGE */}
+                    <div className="relative h-[250px] w-full overflow-hidden bg-gradient-to-b from-[#151922] via-[#0d2137] to-[#040810]">
+                      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(234,179,8,0.15)_0%,transparent_70%)]" />
+
+                      <Link
+                        href={`/shop/${product._id}`}
+                        className="absolute inset-0 flex items-center justify-center p-4"
+                      >
+                        {imageSrc ? (
+                          <div className="relative h-full w-full">
+                            <Image
+                              src={imageSrc}
+                              alt={product.name || "Watch"}
+                              fill
+                              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                              className="object-contain drop-shadow-[0_15px_25px_rgba(0,0,0,0.6)] transition-transform duration-700 group-hover:scale-105"
+                            />
+                          </div>
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center text-sm font-semibold text-gray-400">
+                            No Image
+                          </div>
+                        )}
+                      </Link>
+
+                      {/* GOLDEN BLINKING PRICE BADGE */}
+                      {hasOfferPrice && (
+                        <div className="gold-price-blink absolute right-3 top-3 z-10 flex flex-col items-end rounded-xl px-3 py-1.5 transition-all">
+                          <span className="text-sm font-black tracking-tight leading-none">
+                            ₹{Number(offerPrice).toLocaleString("en-IN")}
+                          </span>
+                          {hasDiscount && (
+                            <span className="mt-0.5 text-[10px] font-bold line-through opacity-80 leading-none">
+                              ₹{Number(originalPrice).toLocaleString("en-IN")}
+                            </span>
+                          )}
                         </div>
                       )}
 
-                      {/* DISCOUNT */}
-                      {discountPercent && (
-                        <span className="absolute left-2 top-2 rounded-sm bg-black px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-white">
-                          {discountPercent}% OFF
-                        </span>
-                      )}
-
-                      {/* WISHLIST */}
+                      {/* WISHLIST BUTTON */}
                       <button
                         type="button"
                         onClick={(event) => {
@@ -452,219 +453,151 @@ export default function FeaturedWatches() {
                             ? "Remove from wishlist"
                             : "Add to wishlist"
                         }
-                        className="absolute right-2 top-2 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 shadow-sm backdrop-blur-md transition-all duration-200 hover:scale-110 active:scale-90"
+                        className="absolute left-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-black/60 text-white shadow-lg backdrop-blur-md transition-all duration-300 hover:scale-110 hover:border-red-400/50 hover:bg-white active:scale-90"
                       >
                         <Heart
-                          size={17}
+                          size={18}
                           strokeWidth={1.8}
-                          className={
+                          className={`transition-colors duration-200 ${
                             isWishlisted
                               ? "fill-red-500 text-red-500"
-                              : "text-gray-700"
-                          }
+                              : "text-white"
+                          }`}
                         />
                       </button>
 
-                      {/* RATING */}
-                      <div className="absolute bottom-2 left-2 flex items-center gap-1 rounded-md bg-white/95 px-2 py-1 text-xs font-semibold text-gray-800 shadow-sm backdrop-blur-sm">
-                        <span>{rating}</span>
-                        <Star
-                          size={11}
-                          className="fill-black text-black"
-                        />
-                      </div>
-                    </div>
-                  </Link>
-
-                  {/* PRODUCT DETAILS */}
-                  <div className="flex flex-1 flex-col p-2.5 md:p-3">
-
-                    {/* BRAND */}
-                    {product.brand && (
-                      <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-gray-500">
-                        {product.brand}
-                      </p>
-                    )}
-
-                    {/* NAME */}
-                    <h3 className="line-clamp-1 font-serif text-base font-semibold tracking-tight text-gray-900">
-                      {product.name}
-                    </h3>
-
-                    {/* PRODUCT ID */}
-                    <Link
-                      href={`/shop/${product._id}`}
-                      className="mt-1 block w-fit text-[10px] text-gray-400 transition-colors hover:text-black"
-                    >
-                      ID: {product._id}
-                    </Link>
-
-                    {/* PRICE */}
-                    <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1">
-                      <span className="text-base font-bold text-black">
-                        ₹
-                        {Number(offerPrice).toLocaleString(
-                          "en-IN"
-                        )}
-                      </span>
-
-                      {originalPrice &&
-                        Number(originalPrice) >
-                          Number(offerPrice) && (
-                          <>
-                            <span className="text-xs text-gray-400 line-through">
-                              ₹
-                              {Number(
-                                originalPrice
-                              ).toLocaleString("en-IN")}
-                            </span>
-
-                            <span className="text-[10px] font-bold uppercase tracking-wide text-red-500">
-                              {discountPercent}% Off
-                            </span>
-                          </>
-                        )}
-                    </div>
-
-                    {/* CATEGORY / GENDER */}
-                    <div className="mt-2 flex flex-wrap gap-1">
-                      {product.category && (
-                        <span className="rounded-full border border-gray-200 px-2 py-1 text-[9px] font-medium uppercase tracking-wide text-gray-600">
-                          {product.category}
-                        </span>
-                      )}
-
-                      {product.gender && (
-                        <span className="rounded-full border border-gray-200 px-2 py-1 text-[9px] font-medium uppercase tracking-wide text-gray-600">
-                          {product.gender}
+                      {/* OUT OF STOCK BADGE */}
+                      {product.stock === 0 && (
+                        <span className="absolute bottom-3 left-3 z-10 rounded-md bg-red-600 px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-white">
+                          Out of Stock
                         </span>
                       )}
                     </div>
 
-                    {/* AVAILABLE COLOURS */}
-                    {availableColors.length > 0 && (
-                      <div className="mt-2">
-                        <p className="text-[10px] font-semibold uppercase tracking-wide text-gray-500">
-                          Available Colours
-                        </p>
-
-                        <p className="mt-0.5 line-clamp-1 text-[11px] text-gray-700">
-                          {availableColors.join(", ")}
-                        </p>
-                      </div>
-                    )}
-
-                    {/* SIZE */}
-                    {availableSizes.length > 0 && (
-                      <div className="mt-2">
-                        <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-gray-500">
-                          Select Size
-                        </p>
-
-                        <div className="flex flex-wrap gap-1">
-                          {availableSizes.map((sizeOption) => {
-                            const isSelected =
-                              selectedSizes[product._id] ===
-                              sizeOption;
-
-                            return (
-                              <button
-                                key={sizeOption}
-                                type="button"
-                                onClick={() =>
-                                  handleSizeChange(
-                                    product._id,
-                                    sizeOption
-                                  )
-                                }
-                                className={`rounded-md border px-2 py-1.5 text-[10px] font-semibold transition-all duration-200 ${
-                                  isSelected
-                                    ? "border-black bg-black text-white"
-                                    : "border-gray-200 bg-gray-50 text-gray-700 hover:border-black hover:text-black"
-                                }`}
-                              >
-                                {sizeOption}
-                              </button>
-                            );
-                          })}
+                    {/* LOWER CONTENT AREA */}
+                    <div className="flex flex-1 flex-col rounded-t-[20px] bg-[#16191f] p-5 -mt-3 relative z-10 border-t border-white/10">
+                      
+                      {/* CATEGORY TAG & NAME */}
+                      <div>
+                        <div className="flex items-center gap-1.5 mb-1.5">
+                          <Tag size={12} className="text-amber-400" />
+                          <span className="text-[11px] font-bold uppercase tracking-wider text-amber-400">
+                            {categoryName}
+                          </span>
                         </div>
+
+                        <Link href={`/shop/${product._id}`}>
+                          <h3 className="font-serif text-lg font-bold uppercase tracking-wide text-white transition-colors duration-300 hover:text-amber-300 line-clamp-1">
+                            {product.name}
+                          </h3>
+                        </Link>
+
+                        <p className="mt-1.5 text-xs text-gray-400 line-clamp-2 leading-relaxed">
+                          {product.description ||
+                            `${product.brand || "Time Aura"} precision timepiece built with advanced features.`}
+                        </p>
                       </div>
-                    )}
 
-                    {/* STOCK */}
-                    {product.stock !== undefined && (
-                      <p
-                        className={`mt-2 text-[10px] font-medium ${
-                          product.stock > 0
-                            ? "text-gray-600"
-                            : "text-red-500"
-                        }`}
-                      >
-                        {product.stock > 0
-                          ? `${product.stock} available`
-                          : "Out of stock"}
-                      </p>
-                    )}
+                      {/* RATING STARS */}
+                      <div className="mt-3 flex items-center gap-1">
+                        {[1, 2, 3, 4, 5].map((starIndex) => (
+                          <Star
+                            key={starIndex}
+                            size={13}
+                            className={
+                              starIndex <= Math.floor(rating)
+                                ? "fill-amber-400 text-amber-400"
+                                : "fill-gray-600 text-gray-600"
+                            }
+                          />
+                        ))}
+                      </div>
 
-                    {/* CART */}
-                    <div className="mt-auto pt-3">
+                      {/* SIZES PICKER */}
+                      {availableSizes.length > 0 && (
+                        <div className="mt-3 pt-2 border-t border-white/10">
+                          <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
+                            <span className="text-[10px] font-bold text-gray-400 uppercase">Size:</span>
+                            {availableSizes.map((sizeOption) => {
+                              const isSelected = selectedSizes[product._id] === sizeOption;
+                              return (
+                                <button
+                                  key={sizeOption}
+                                  type="button"
+                                  onClick={() => handleSizeChange(product._id, sizeOption)}
+                                  className={`rounded px-2 py-0.5 text-[10px] font-bold transition-all ${
+                                    isSelected
+                                      ? "bg-amber-400 text-black"
+                                      : "bg-white/10 text-white hover:bg-amber-400/30"
+                                  }`}
+                                >
+                                  {sizeOption}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* CART MESSAGE */}
                       {cartMessage[product._id] && (
                         <p
-                          className={`mb-2 text-center text-[10px] font-semibold ${
-                            cartMessage[product._id] ===
-                            "Added to cart"
-                              ? "text-green-600"
-                              : "text-red-500"
+                          role="status"
+                          className={`mt-2 text-center text-xs font-bold ${
+                            cartMessage[product._id] === "Added to cart"
+                              ? "text-emerald-400"
+                              : "text-red-400"
                           }`}
                         >
                           {cartMessage[product._id]}
                         </p>
                       )}
 
-                      <button
-                        type="button"
-                        disabled={product.stock === 0}
-                        onClick={() =>
-                          handleAddToCart(
-                            product._id,
-                            availableSizes,
-                            availableColors
-                          )
-                        }
-                        className={`flex w-full items-center justify-center gap-2 rounded-lg py-2.5 text-[11px] font-semibold uppercase tracking-[0.08em] transition-all duration-200 ${
-                          product.stock === 0
-                            ? "cursor-not-allowed bg-gray-200 text-gray-400"
-                            : "bg-black text-white hover:bg-gray-800 active:scale-[0.97]"
-                        }`}
-                      >
-                        <ShoppingBag
-                          size={14}
-                          strokeWidth={1.8}
-                        />
+                      {/* ADD TO CART BUTTON */}
+                      <div className="mt-auto pt-4">
+                        <button
+                          type="button"
+                          disabled={product.stock === 0 || product.stock === null}
+                          onClick={() =>
+                            handleAddToCart(
+                              product._id,
+                              availableSizes,
+                              availableColors
+                            )
+                          }
+                          className={`flex w-full items-center justify-center gap-2 rounded-xl py-3 text-xs font-extrabold uppercase tracking-[0.15em] transition-all duration-300 ${
+                            product.stock === 0 || product.stock === null
+                              ? "cursor-not-allowed bg-gray-700 text-gray-400"
+                              : "bg-gradient-to-r from-amber-500 to-yellow-600 text-black shadow-md shadow-amber-500/20 hover:from-amber-400 hover:to-yellow-500 active:scale-[0.98]"
+                          }`}
+                        >
+                          <ShoppingBag size={16} strokeWidth={2} />
+                          {product.stock === 0 || product.stock === null
+                            ? "Out of Stock"
+                            : "Add to Cart"}
+                        </button>
+                      </div>
 
-                        {product.stock === 0
-                          ? "Out of Stock"
-                          : "Add to Cart"}
-                      </button>
                     </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
+                  </article>
+                );
+              })}
+            </div>
+          )}
 
-        {/* MOBILE VIEW ALL */}
-        <div className="mt-7 flex justify-center md:hidden">
-          <Link
-            href="/shop"
-            className="flex items-center gap-2 border-b border-black pb-1 text-xs font-semibold uppercase tracking-[0.15em] text-black"
-          >
-            View All
-            <ArrowRight size={15} />
-          </Link>
+          {/* MOBILE VIEW ALL BUTTON */}
+          <div className="mt-8 flex justify-center md:hidden">
+            <Link
+              href="/shop"
+              className="flex items-center gap-2 border-b-2 border-black pb-2 text-sm font-bold uppercase tracking-[0.15em] text-black transition-all hover:gap-4"
+            >
+              View All
+              <ArrowRight size={18} />
+            </Link>
+          </div>
+
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

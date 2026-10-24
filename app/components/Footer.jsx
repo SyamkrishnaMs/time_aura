@@ -1,10 +1,9 @@
-
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-black text-white">
+    <footer className="bg-[#0a0b0e] text-white border-t border-white/10">
 
       {/* Main Footer */}
       <div className="px-6 py-16 md:px-12 lg:px-20">
@@ -15,12 +14,12 @@ export default function Footer() {
           <div>
             <Link
               href="/"
-              className="text-2xl font-semibold tracking-[0.18em] text-white"
+              className="font-serif text-2xl font-bold tracking-[0.18em] text-white transition hover:text-amber-400"
             >
               TIME AURA
             </Link>
 
-            <p className="mt-5 max-w-xs text-sm leading-7 text-gray-400">
+            <p className="mt-5 max-w-xs text-sm leading-relaxed text-gray-400 font-light">
               Timeless watches crafted for modern living. Discover elegance,
               precision, and style in every second.
             </p>
@@ -30,27 +29,30 @@ export default function Footer() {
 
               <a
                 href="#"
-                className="flex h-10 w-10 items-center justify-center
-                border border-gray-700 text-xs font-medium text-white
-                transition-all duration-300 hover:bg-white hover:text-black"
+                className="flex h-10 w-10 items-center justify-center rounded-xl
+                border border-white/15 bg-white/5 text-xs font-bold text-white
+                transition-all duration-300 hover:border-amber-400 hover:bg-amber-400 hover:text-black"
+                aria-label="Instagram"
               >
                 IG
               </a>
 
               <a
                 href="#"
-                className="flex h-10 w-10 items-center justify-center
-                border border-gray-700 text-xs font-medium text-white
-                transition-all duration-300 hover:bg-white hover:text-black"
+                className="flex h-10 w-10 items-center justify-center rounded-xl
+                border border-white/15 bg-white/5 text-xs font-bold text-white
+                transition-all duration-300 hover:border-amber-400 hover:bg-amber-400 hover:text-black"
+                aria-label="Facebook"
               >
                 FB
               </a>
 
               <a
                 href="#"
-                className="flex h-10 w-10 items-center justify-center
-                border border-gray-700 text-xs font-medium text-white
-                transition-all duration-300 hover:bg-white hover:text-black"
+                className="flex h-10 w-10 items-center justify-center rounded-xl
+                border border-white/15 bg-white/5 text-xs font-bold text-white
+                transition-all duration-300 hover:border-amber-400 hover:bg-amber-400 hover:text-black"
+                aria-label="X (Twitter)"
               >
                 X
               </a>
@@ -60,7 +62,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-white">
+            <h3 className="text-xs font-bold uppercase tracking-[0.25em] text-amber-400">
               Quick Links
             </h3>
 
@@ -69,7 +71,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/"
-                  className="text-sm text-gray-400 transition hover:text-white"
+                  className="text-sm text-gray-400 transition hover:text-amber-400"
                 >
                   Home
                 </Link>
@@ -78,7 +80,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/shop"
-                  className="text-sm text-gray-400 transition hover:text-white"
+                  className="text-sm text-gray-400 transition hover:text-amber-400"
                 >
                   Shop
                 </Link>
@@ -87,7 +89,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/#about"
-                  className="text-sm text-gray-400 transition hover:text-white"
+                  className="text-sm text-gray-400 transition hover:text-amber-400"
                 >
                   About
                 </Link>
@@ -96,7 +98,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/#contact"
-                  className="text-sm text-gray-400 transition hover:text-white"
+                  className="text-sm text-gray-400 transition hover:text-amber-400"
                 >
                   Contact
                 </Link>
@@ -107,7 +109,7 @@ export default function Footer() {
 
           {/* Customer Care */}
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-white">
+            <h3 className="text-xs font-bold uppercase tracking-[0.25em] text-amber-400">
               Customer Care
             </h3>
 
@@ -116,7 +118,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="#"
-                  className="text-sm text-gray-400 transition hover:text-white"
+                  className="text-sm text-gray-400 transition hover:text-amber-400"
                 >
                   Shipping & Delivery
                 </Link>
@@ -125,7 +127,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="#"
-                  className="text-sm text-gray-400 transition hover:text-white"
+                  className="text-sm text-gray-400 transition hover:text-amber-400"
                 >
                   Returns & Exchanges
                 </Link>
@@ -134,7 +136,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="#"
-                  className="text-sm text-gray-400 transition hover:text-white"
+                  className="text-sm text-gray-400 transition hover:text-amber-400"
                 >
                   Privacy Policy
                 </Link>
@@ -143,7 +145,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="#"
-                  className="text-sm text-gray-400 transition hover:text-white"
+                  className="text-sm text-gray-400 transition hover:text-amber-400"
                 >
                   Terms & Conditions
                 </Link>
@@ -154,16 +156,16 @@ export default function Footer() {
 
           {/* Newsletter */}
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-white">
+            <h3 className="text-xs font-bold uppercase tracking-[0.25em] text-amber-400">
               Stay Updated
             </h3>
 
-            <p className="mt-6 text-sm leading-7 text-gray-400">
+            <p className="mt-6 text-sm leading-relaxed text-gray-400 font-light">
               Subscribe to receive updates about new collections and
               exclusive offers.
             </p>
 
-            <div className="mt-6 flex border-b border-gray-600 pb-3">
+            <div className="mt-6 flex border-b border-white/20 pb-3 focus-within:border-amber-400 transition">
 
               <input
                 type="email"
@@ -173,8 +175,8 @@ export default function Footer() {
               />
 
               <button
-                className="ml-2 text-white transition
-                hover:translate-x-1"
+                className="ml-2 text-amber-400 transition
+                hover:translate-x-1 hover:text-amber-300"
                 aria-label="Subscribe"
               >
                 <ArrowUpRight size={20} />
@@ -187,7 +189,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom Footer */}
-      <div className="border-t border-gray-800 px-6 py-6 md:px-12 lg:px-20">
+      <div className="border-t border-white/10 px-6 py-6 md:px-12 lg:px-20 bg-black/40">
 
         <div className="flex flex-col items-center justify-between gap-3 md:flex-row">
 
@@ -195,7 +197,7 @@ export default function Footer() {
             © 2026 Time Aura. All rights reserved.
           </p>
 
-          <p className="text-xs uppercase tracking-[0.15em] text-gray-500">
+          <p className="text-xs uppercase tracking-[0.2em] text-amber-400/80 font-medium">
             Crafted for every second
           </p>
 
@@ -206,4 +208,3 @@ export default function Footer() {
     </footer>
   );
 }
-

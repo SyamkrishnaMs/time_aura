@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Mail, Phone, MapPin, ArrowRight } from "lucide-react";
@@ -11,9 +10,7 @@ export default function ContactSection() {
     message: "",
   });
 
-  const handleChange = (
-    e
-  ) => {
+  const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -35,21 +32,21 @@ export default function ContactSection() {
   return (
     <section
       id="contact"
-      className="bg-[#F8F8F1] px-6 py-20 md:px-12 lg:px-20"
+      className="bg-white px-6 py-20 md:px-12 lg:px-20 text-black"
     >
       <div className="mx-auto max-w-7xl">
 
         {/* Heading */}
         <div className="mb-14">
-          <p className="mb-3 text-sm uppercase tracking-[0.35em] text-gray-500">
+          <p className="mb-3 text-xs font-bold uppercase tracking-[0.4em] text-amber-600">
             Get In Touch
           </p>
 
-          <h2 className="text-4xl font-semibold tracking-tight text-black md:text-5xl">
+          <h2 className="font-serif text-4xl font-bold tracking-tight text-black md:text-5xl">
             Contact Time Aura
           </h2>
 
-          <p className="mt-4 max-w-xl text-gray-600">
+          <p className="mt-4 max-w-xl text-gray-600 text-sm md:text-base leading-relaxed font-light">
             Have a question about our watches or your order?
             We would love to hear from you.
           </p>
@@ -59,54 +56,54 @@ export default function ContactSection() {
         <div className="grid gap-14 lg:grid-cols-2">
 
           {/* Contact Information */}
-          <div className="space-y-8">
+          <div className="space-y-6">
 
             {/* Email */}
-            <div className="flex gap-5">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center border border-black">
+            <div className="flex gap-5 rounded-2xl border border-gray-200 bg-[#f9f9f6] p-6 transition-all duration-300 hover:border-amber-500/50 shadow-sm">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-amber-500/40 bg-amber-500/10 text-amber-600 shadow-sm">
                 <Mail size={20} />
               </div>
 
               <div>
-                <h3 className="text-lg font-medium text-black">
+                <h3 className="font-serif text-base font-bold uppercase tracking-wider text-black">
                   Email
                 </h3>
 
-                <p className="mt-1 text-gray-600">
+                <p className="mt-1 text-xs text-amber-600 font-semibold">
                   support@timeaura.com
                 </p>
               </div>
             </div>
 
             {/* Phone */}
-            <div className="flex gap-5">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center border border-black">
+            <div className="flex gap-5 rounded-2xl border border-gray-200 bg-[#f9f9f6] p-6 transition-all duration-300 hover:border-amber-500/50 shadow-sm">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-amber-500/40 bg-amber-500/10 text-amber-600 shadow-sm">
                 <Phone size={20} />
               </div>
 
               <div>
-                <h3 className="text-lg font-medium text-black">
+                <h3 className="font-serif text-base font-bold uppercase tracking-wider text-black">
                   Phone
                 </h3>
 
-                <p className="mt-1 text-gray-600">
+                <p className="mt-1 text-xs text-amber-600 font-semibold">
                   +91 98765 43210
                 </p>
               </div>
             </div>
 
             {/* Address */}
-            <div className="flex gap-5">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center border border-black">
+            <div className="flex gap-5 rounded-2xl border border-gray-200 bg-[#f9f9f6] p-6 transition-all duration-300 hover:border-amber-500/50 shadow-sm">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-amber-500/40 bg-amber-500/10 text-amber-600 shadow-sm">
                 <MapPin size={20} />
               </div>
 
               <div>
-                <h3 className="text-lg font-medium text-black">
+                <h3 className="font-serif text-base font-bold uppercase tracking-wider text-black">
                   Address
                 </h3>
 
-                <p className="mt-1 max-w-sm text-gray-600">
+                <p className="mt-1 max-w-sm text-xs text-gray-600 leading-relaxed">
                   Time Aura Studio,
                   <br />
                   Kochi, Kerala, India
@@ -117,13 +114,16 @@ export default function ContactSection() {
           </div>
 
           {/* Contact Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-6 rounded-[24px] border border-gray-200 bg-[#f9f9f6] p-8 shadow-xl"
+          >
 
             {/* Name */}
             <div>
               <label
                 htmlFor="name"
-                className="mb-2 block text-sm font-medium text-black"
+                className="mb-2 block text-xs font-bold uppercase tracking-wider text-gray-700"
               >
                 Name
               </label>
@@ -136,7 +136,7 @@ export default function ContactSection() {
                 onChange={handleChange}
                 placeholder="Your name"
                 required
-                className="w-full border border-gray-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-black"
+                className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-amber-600"
               />
             </div>
 
@@ -144,7 +144,7 @@ export default function ContactSection() {
             <div>
               <label
                 htmlFor="email"
-                className="mb-2 block text-sm font-medium text-black"
+                className="mb-2 block text-xs font-bold uppercase tracking-wider text-gray-700"
               >
                 Email
               </label>
@@ -157,7 +157,7 @@ export default function ContactSection() {
                 onChange={handleChange}
                 placeholder="Your email"
                 required
-                className="w-full border border-gray-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-black"
+                className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-amber-600"
               />
             </div>
 
@@ -165,7 +165,7 @@ export default function ContactSection() {
             <div>
               <label
                 htmlFor="message"
-                className="mb-2 block text-sm font-medium text-black"
+                className="mb-2 block text-xs font-bold uppercase tracking-wider text-gray-700"
               >
                 Message
               </label>
@@ -178,19 +178,19 @@ export default function ContactSection() {
                 placeholder="Write your message..."
                 rows={5}
                 required
-                className="w-full resize-none border border-gray-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-black"
+                className="w-full resize-none rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-amber-600"
               />
             </div>
 
             {/* Submit */}
             <button
               type="submit"
-              className="group flex items-center gap-3 bg-black px-7 py-3.5 text-sm font-medium text-white transition hover:bg-gray-800"
+              className="group flex w-full items-center justify-center gap-3 rounded-xl bg-black px-7 py-3.5 text-xs font-extrabold uppercase tracking-widest text-white shadow-lg transition hover:bg-gray-800 active:scale-95"
             >
               Send Message
 
               <ArrowRight
-                size={18}
+                size={16}
                 className="transition-transform duration-300 group-hover:translate-x-1"
               />
             </button>

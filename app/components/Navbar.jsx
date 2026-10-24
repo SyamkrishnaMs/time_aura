@@ -208,51 +208,51 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="absolute left-0 top-0 z-50 w-full px-8 py-6">
+    <nav className="absolute left-0 top-0 z-50 w-full px-8 py-6 bg-gradient-to-b from-[#0a0b0e]/90 to-transparent backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between">
 
         {/* LOGO */}
         <Link
           href="/"
-          className="flex items-center gap-2 text-base font-semibold text-white"
+          className="flex items-center gap-2 text-base font-semibold text-white group"
         >
-          <span className="text-2xl">✧</span>
-          <span className="text-2xl">Time Aura</span>
+          <span className="text-2xl text-amber-400 transition group-hover:rotate-45 duration-300">✧</span>
+          <span className="font-serif text-2xl font-bold tracking-wider text-white">Time Aura</span>
         </Link>
 
         {/* NAVIGATION */}
         <div className="hidden items-center gap-9 md:flex">
           <Link
             href="/#home"
-            className="text-lg font-medium text-white transition hover:text-gray-300"
+            className="text-sm font-bold uppercase tracking-widest text-gray-300 transition hover:text-amber-400"
           >
             Home
           </Link>
 
           <Link
             href="/shop"
-            className="text-lg font-medium text-white transition hover:text-gray-300"
+            className="text-sm font-bold uppercase tracking-widest text-gray-300 transition hover:text-amber-400"
           >
             Shop
           </Link>
 
           <Link
             href="/#feature"
-            className="text-lg font-medium text-white transition hover:text-gray-300"
+            className="text-sm font-bold uppercase tracking-widest text-gray-300 transition hover:text-amber-400"
           >
             Feature
           </Link>
 
           <Link
             href="/#about"
-            className="text-lg font-medium text-white transition hover:text-gray-300"
+            className="text-sm font-bold uppercase tracking-widest text-gray-300 transition hover:text-amber-400"
           >
             About
           </Link>
 
           <Link
             href="/#contact"
-            className="text-lg font-medium text-white transition hover:text-gray-300"
+            className="text-sm font-bold uppercase tracking-widest text-gray-300 transition hover:text-amber-400"
           >
             Contact
           </Link>
@@ -264,7 +264,7 @@ export default function Navbar() {
           {/* SEARCH */}
           <button
             type="button"
-            className="text-white transition hover:text-gray-300"
+            className="text-white transition hover:text-amber-400"
             aria-label="Search"
           >
             <Search size={20} strokeWidth={1.8} />
@@ -274,13 +274,13 @@ export default function Navbar() {
           <button
             type="button"
             onClick={handleWishlist}
-            className="relative text-white transition hover:text-gray-300"
+            className="relative text-white transition hover:text-amber-400"
             aria-label="Wishlist"
           >
             <Heart size={20} strokeWidth={1.8} />
 
             {isLoggedIn && wishlistCount > 0 && (
-              <span className="absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-white px-1 text-[10px] font-semibold text-black">
+              <span className="absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-amber-400 px-1 text-[10px] font-black text-black shadow-md shadow-amber-500/40">
                 {wishlistCount}
               </span>
             )}
@@ -290,13 +290,13 @@ export default function Navbar() {
           <Link
             href="/cart"
             onClick={handleCart}
-            className="relative text-white transition hover:text-gray-300"
+            className="relative text-white transition hover:text-amber-400"
             aria-label="Cart"
           >
             <ShoppingBag size={20} strokeWidth={1.8} />
 
             {isLoggedIn && cartCount > 0 && (
-              <span className="absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-white px-1 text-[10px] font-semibold text-black">
+              <span className="absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-amber-400 px-1 text-[10px] font-black text-black shadow-md shadow-amber-500/40">
                 {cartCount}
               </span>
             )}
@@ -312,19 +312,19 @@ export default function Navbar() {
                 onClick={() =>
                   setShowProfile((prev) => !prev)
                 }
-                className="flex items-center gap-2.5 text-white transition hover:text-gray-300"
+                className="flex items-center gap-2.5 text-white transition hover:text-amber-400"
               >
-                <div className="flex h-9 w-9 items-center justify-center rounded-full border border-white/30 bg-white/10 backdrop-blur-sm">
+                <div className="flex h-9 w-9 items-center justify-center rounded-full border border-amber-400/40 bg-amber-400/10 backdrop-blur-sm text-amber-400 shadow-sm">
                   <User size={18} />
                 </div>
 
-                <span className="hidden text-sm font-medium sm:inline-block">
+                <span className="hidden text-xs font-bold uppercase tracking-wider sm:inline-block text-gray-200">
                   {userName}
                 </span>
 
                 <ChevronDown
                   size={16}
-                  className={`transition-transform duration-300 ${
+                  className={`text-amber-400 transition-transform duration-300 ${
                     showProfile ? "rotate-180" : ""
                   }`}
                 />
@@ -332,7 +332,7 @@ export default function Navbar() {
 
               {/* PROFILE DROPDOWN */}
               {showProfile && (
-                <div className="absolute right-0 top-12 w-60 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-2xl">
+                <div className="absolute right-0 top-12 w-60 overflow-hidden rounded-2xl border border-amber-400/30 bg-[#12151d] text-white shadow-2xl backdrop-blur-xl">
 
                   <button
                     type="button"
@@ -340,9 +340,9 @@ export default function Navbar() {
                       router.push("/profile");
                       setShowProfile(false);
                     }}
-                    className="flex w-full items-center gap-3 px-5 py-3 text-left text-sm text-gray-700 transition hover:bg-gray-100"
+                    className="flex w-full items-center gap-3 px-5 py-3 text-left text-xs font-bold uppercase tracking-wider text-gray-300 transition hover:bg-amber-400/10 hover:text-amber-400"
                   >
-                    <User size={18} />
+                    <User size={16} className="text-amber-400" />
                     <span>My Profile</span>
                   </button>
 
@@ -352,9 +352,9 @@ export default function Navbar() {
                       router.push("/my_order");
                       setShowProfile(false);
                     }}
-                    className="flex w-full items-center gap-3 px-5 py-3 text-left text-sm text-gray-700 transition hover:bg-gray-100"
+                    className="flex w-full items-center gap-3 px-5 py-3 text-left text-xs font-bold uppercase tracking-wider text-gray-300 transition hover:bg-amber-400/10 hover:text-amber-400"
                   >
-                    <Package size={18} />
+                    <Package size={16} className="text-amber-400" />
                     <span>My Orders</span>
                   </button>
 
@@ -364,21 +364,21 @@ export default function Navbar() {
                       router.push("/wishlist");
                       setShowProfile(false);
                     }}
-                    className="flex w-full items-center justify-between px-5 py-3 text-left text-sm text-gray-700 transition hover:bg-gray-100"
+                    className="flex w-full items-center justify-between px-5 py-3 text-left text-xs font-bold uppercase tracking-wider text-gray-300 transition hover:bg-amber-400/10 hover:text-amber-400"
                   >
                     <div className="flex items-center gap-3">
-                      <Heart size={18} />
+                      <Heart size={16} className="text-amber-400" />
                       <span>Wishlist</span>
                     </div>
 
                     {wishlistCount > 0 && (
-                      <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-black px-1.5 text-[10px] font-semibold text-white">
+                      <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-400 px-1.5 text-[10px] font-black text-black">
                         {wishlistCount}
                       </span>
                     )}
                   </button>
 
-                  <div className="my-1 border-t border-gray-100" />
+                  <div className="my-1 border-t border-white/10" />
 
                   <button
                     type="button"
@@ -386,9 +386,9 @@ export default function Navbar() {
                       router.push("/settings");
                       setShowProfile(false);
                     }}
-                    className="flex w-full items-center gap-3 px-5 py-3 text-left text-sm text-gray-700 transition hover:bg-gray-100"
+                    className="flex w-full items-center gap-3 px-5 py-3 text-left text-xs font-bold uppercase tracking-wider text-gray-300 transition hover:bg-amber-400/10 hover:text-amber-400"
                   >
-                    <Settings size={18} />
+                    <Settings size={16} className="text-amber-400" />
                     <span>Settings</span>
                   </button>
 
@@ -398,20 +398,20 @@ export default function Navbar() {
                       router.push("/report");
                       setShowProfile(false);
                     }}
-                    className="flex w-full items-center gap-3 px-5 py-3 text-left text-sm text-gray-700 transition hover:bg-gray-100"
+                    className="flex w-full items-center gap-3 px-5 py-3 text-left text-xs font-bold uppercase tracking-wider text-gray-300 transition hover:bg-amber-400/10 hover:text-amber-400"
                   >
-                    <Flag size={18} />
+                    <Flag size={16} className="text-amber-400" />
                     <span>Report a Problem</span>
                   </button>
 
-                  <div className="my-1 border-t border-gray-100" />
+                  <div className="my-1 border-t border-white/10" />
 
                   <button
                     type="button"
                     onClick={handleLogout}
-                    className="flex w-full items-center gap-3 px-5 py-3 text-left text-sm text-red-600 transition hover:bg-red-50"
+                    className="flex w-full items-center gap-3 px-5 py-3 text-left text-xs font-bold uppercase tracking-wider text-red-400 transition hover:bg-red-500/10"
                   >
-                    <LogOut size={18} />
+                    <LogOut size={16} />
                     <span>Logout</span>
                   </button>
                 </div>
@@ -421,7 +421,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={handleSign}
-              className="rounded-full border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white hover:text-black"
+              className="rounded-full border border-amber-400/50 bg-gradient-to-r from-amber-500 to-yellow-600 px-6 py-2.5 text-xs font-extrabold uppercase tracking-widest text-black shadow-lg shadow-amber-500/20 backdrop-blur-sm transition hover:from-amber-400 hover:to-yellow-500 active:scale-95"
             >
               Sign Up
             </button>

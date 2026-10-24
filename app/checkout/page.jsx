@@ -27,11 +27,9 @@ export default function CheckoutPage() {
   const [cartItems, setCartItems] = useState([]);
 
   const [addresses, setAddresses] = useState([]);
-  const [selectedAddressId, setSelectedAddressId] =
-    useState("");
+  const [selectedAddressId, setSelectedAddressId] = useState("");
 
-  const [showAddressForm, setShowAddressForm] =
-    useState(false);
+  const [showAddressForm, setShowAddressForm] = useState(false);
 
   const [address, setAddress] = useState({
     name: "",
@@ -42,18 +40,15 @@ export default function CheckoutPage() {
     pincode: "",
   });
 
-  const [paymentMethod, setPaymentMethod] =
-    useState("COD");
+  const [paymentMethod, setPaymentMethod] = useState("COD");
 
   const [loading, setLoading] = useState(true);
-  const [placingOrder, setPlacingOrder] =
-    useState(false);
+  const [placingOrder, setPlacingOrder] = useState(false);
 
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
-  const [paymentSuccess, setPaymentSuccess] =
-    useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
 
   // =====================================================
   // LOAD RAZORPAY SCRIPT
@@ -67,10 +62,7 @@ export default function CheckoutPage() {
     if (existingScript) return;
 
     const script = document.createElement("script");
-
-    script.src =
-      "https://checkout.razorpay.com/v1/checkout.js";
-
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
     script.async = true;
 
     document.body.appendChild(script);
@@ -502,10 +494,6 @@ export default function CheckoutPage() {
 
       setPlacingOrder(true);
 
-      // -----------------------------------------------
-      // CHECK RAZORPAY SCRIPT
-      // -----------------------------------------------
-
       if (
         typeof window === "undefined" ||
         !window.Razorpay
@@ -518,10 +506,6 @@ export default function CheckoutPage() {
 
         return;
       }
-
-      // -----------------------------------------------
-      // CREATE RAZORPAY ORDER
-      // -----------------------------------------------
 
       const response = await axios.post(
         "/api/order",
@@ -572,10 +556,6 @@ export default function CheckoutPage() {
         );
       }
 
-      // -----------------------------------------------
-      // RAZORPAY OPTIONS
-      // -----------------------------------------------
-
       const options = {
         key: razorpayKey,
 
@@ -608,7 +588,7 @@ export default function CheckoutPage() {
         },
 
         theme: {
-          color: "#000000",
+          color: "#eab308",
         },
 
         modal: {
@@ -617,10 +597,6 @@ export default function CheckoutPage() {
             setMessage("");
           },
         },
-
-        // ---------------------------------------------
-        // PAYMENT SUCCESS
-        // ---------------------------------------------
 
         handler: async (
           paymentResponse
@@ -631,10 +607,6 @@ export default function CheckoutPage() {
           );
         },
       };
-
-      // -----------------------------------------------
-      // OPEN RAZORPAY
-      // -----------------------------------------------
 
       const razorpay =
         new window.Razorpay(options);
@@ -731,17 +703,9 @@ export default function CheckoutPage() {
         );
       }
 
-      // -----------------------------------------------
-      // CART UPDATE EVENT
-      // -----------------------------------------------
-
       window.dispatchEvent(
         new Event("cartUpdated")
       );
-
-      // -----------------------------------------------
-      // SUCCESS
-      // -----------------------------------------------
 
       setPaymentSuccess(true);
 
@@ -781,10 +745,6 @@ export default function CheckoutPage() {
     setError("");
     setMessage("");
 
-    // -----------------------------------------------
-    // ADDRESS CHECK
-    // -----------------------------------------------
-
     if (!selectedAddressId) {
       setError(
         "Please select a delivery address"
@@ -804,18 +764,10 @@ export default function CheckoutPage() {
       return;
     }
 
-    // -----------------------------------------------
-    // CART CHECK
-    // -----------------------------------------------
-
     if (cartItems.length === 0) {
       setError("Your cart is empty");
       return;
     }
-
-    // -----------------------------------------------
-    // TOTAL CHECK
-    // -----------------------------------------------
 
     if (totalAmount <= 0) {
       setError(
@@ -824,10 +776,6 @@ export default function CheckoutPage() {
 
       return;
     }
-
-    // -----------------------------------------------
-    // PAYMENT METHOD
-    // -----------------------------------------------
 
     if (paymentMethod === "COD") {
       await placeCODOrder(
@@ -858,11 +806,11 @@ export default function CheckoutPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F8F8F1] flex items-center justify-center">
+      <div className="min-h-screen bg-[#0a0b0e] flex items-center justify-center text-white">
         <div className="text-center">
-          <div className="w-8 h-8 border-2 border-black border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <div className="w-8 h-8 border-2 border-amber-400 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
 
-          <p className="text-sm text-gray-600">
+          <p className="text-sm font-bold uppercase tracking-[0.25em] text-amber-400">
             Loading checkout...
           </p>
         </div>
@@ -876,22 +824,22 @@ export default function CheckoutPage() {
 
   if (paymentSuccess) {
     return (
-      <div className="min-h-screen bg-[#F8F8F1] flex items-center justify-center px-4">
-        <div className="w-full max-w-md bg-white border border-gray-200 p-10 text-center shadow-sm">
-          <div className="w-16 h-16 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-6">
-            <Check size={30} />
+      <div className="min-h-screen bg-[#0a0b0e] flex items-center justify-center px-4 text-white">
+        <div className="w-full max-w-md rounded-[28px] border-2 border-amber-400/40 bg-[#12151d] p-10 text-center shadow-2xl">
+          <div className="w-16 h-16 bg-gradient-to-r from-amber-500 to-yellow-600 text-black rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-amber-500/30">
+            <Check size={30} strokeWidth={2.5} />
           </div>
 
-          <h1 className="text-2xl font-semibold text-black mb-3">
+          <h1 className="font-serif text-2xl font-bold text-white mb-3">
             Order Placed Successfully
           </h1>
 
-          <p className="text-gray-600 text-sm leading-6">
+          <p className="text-gray-400 text-sm leading-6">
             Your Time Aura order has been
             successfully placed.
           </p>
 
-          <p className="text-gray-500 text-xs mt-4">
+          <p className="text-amber-400 text-xs font-semibold uppercase tracking-wider mt-5">
             Redirecting you to the shop...
           </p>
         </div>
@@ -904,734 +852,752 @@ export default function CheckoutPage() {
   // =====================================================
 
   return (
-    <div className="min-h-screen bg-[#F8F8F1]">
-      {/* =================================================
-          HEADER
-      ================================================= */}
+    <>
+      <style jsx global>{`
+        @keyframes goldBorderBlink {
+          0%, 100% {
+            border-color: rgba(234, 179, 8, 0.85);
+            box-shadow: 0 0 18px rgba(234, 179, 8, 0.35), 0 8px 25px rgba(0, 0, 0, 0.4);
+          }
+          50% {
+            border-color: rgba(234, 179, 8, 0.25);
+            box-shadow: 0 0 6px rgba(234, 179, 8, 0.1), 0 8px 25px rgba(0, 0, 0, 0.4);
+          }
+        }
+        .gold-blink-card {
+          animation: goldBorderBlink 2.5s infinite ease-in-out;
+        }
+      `}</style>
 
-      <header className="border-b border-gray-200 bg-[#F8F8F1]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-          <Link
-            href="/cart"
-            className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-black transition"
-          >
-            <ArrowLeft size={18} />
+      <div className="min-h-screen bg-[#0a0b0e] text-white">
+        {/* =================================================
+            HEADER
+        ================================================= */}
 
-            <span>
-              Back to Cart
-            </span>
-          </Link>
+        <header className="border-b border-white/10 bg-[#0a0b0e]">
+          <div className="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
+            <Link
+              href="/cart"
+              className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-amber-400 hover:text-amber-300 transition"
+            >
+              <ArrowLeft size={16} />
 
-          <div className="text-center">
-            <h1 className="text-xl font-semibold tracking-[0.25em]">
-              TIME AURA
-            </h1>
+              <span>
+                Back to Cart
+              </span>
+            </Link>
 
-            <p className="text-[9px] tracking-[0.35em] text-gray-500 mt-1">
-              MORE THAN JUST TIME
+            <div className="text-center">
+              <h1 className="font-serif text-xl font-bold tracking-[0.25em] text-white">
+                TIME AURA
+              </h1>
+
+              <p className="text-[9px] tracking-[0.35em] text-amber-400 mt-1">
+                MORE THAN JUST TIME
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2 text-xs text-gray-400">
+              <ShieldCheck size={16} className="text-amber-400" />
+
+              <span className="hidden sm:block">
+                Secure Checkout
+              </span>
+            </div>
+          </div>
+        </header>
+
+        {/* =================================================
+            CONTENT
+        ================================================= */}
+
+        <main className="max-w-7xl mx-auto px-6 lg:px-12 py-12">
+          <div className="mb-10">
+            <p className="mb-2 text-xs font-bold uppercase tracking-[0.3em] text-amber-400">
+              Secure Transaction
+            </p>
+            <h2 className="font-serif text-3xl font-bold text-white md:text-4xl">
+              Checkout
+            </h2>
+
+            <p className="text-gray-400 mt-2 text-sm">
+              Complete your master-crafted timepiece order securely.
             </p>
           </div>
 
-          <div className="flex items-center gap-2 text-xs text-gray-500">
-            <ShieldCheck size={16} />
-
-            <span className="hidden sm:block">
-              Secure Checkout
-            </span>
-          </div>
-        </div>
-      </header>
-
-      {/* =================================================
-          CONTENT
-      ================================================= */}
-
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="mb-10">
-          <h2 className="text-3xl font-semibold text-black">
-            Checkout
-          </h2>
-
-          <p className="text-gray-500 mt-2 text-sm">
-            Complete your order securely.
-          </p>
-        </div>
-
-        {/* =================================================
-            ERROR / MESSAGE
-        ================================================= */}
-
-        {error && (
-          <div className="mb-6 border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-            {error}
-          </div>
-        )}
-
-        {message && !error && (
-          <div className="mb-6 border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
-            {message}
-          </div>
-        )}
-
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-8">
           {/* =================================================
-              LEFT SIDE
+              ERROR / MESSAGE
           ================================================= */}
 
-          <div className="space-y-8">
+          {error && (
+            <div className="mb-6 rounded-xl border border-red-500/40 bg-red-500/10 px-5 py-3.5 text-sm font-semibold text-red-300 shadow-md">
+              {error}
+            </div>
+          )}
+
+          {message && !error && (
+            <div className="mb-6 rounded-xl border border-emerald-500/40 bg-emerald-500/10 px-5 py-3.5 text-sm font-semibold text-emerald-300 shadow-md">
+              {message}
+            </div>
+          )}
+
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-8">
             {/* =================================================
-                DELIVERY ADDRESS
+                LEFT SIDE
             ================================================= */}
 
-            <section className="bg-white border border-gray-200">
-              <div className="px-6 py-5 border-b border-gray-200 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 bg-black text-white flex items-center justify-center">
-                    <MapPin size={18} />
+            <div className="space-y-8">
+              {/* =================================================
+                  DELIVERY ADDRESS
+              ================================================= */}
+
+              <section className="rounded-[24px] border border-white/10 bg-[#12151d] overflow-hidden shadow-xl">
+                <div className="px-6 py-5 border-b border-white/10 bg-[#161a23] flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-amber-400/20 border border-amber-400/40 text-amber-400 flex items-center justify-center">
+                      <MapPin size={18} />
+                    </div>
+
+                    <div>
+                      <h3 className="font-serif font-bold text-white uppercase tracking-wider text-sm">
+                        Delivery Address
+                      </h3>
+
+                      <p className="text-xs text-gray-400 mt-0.5">
+                        Where should we deliver your watch?
+                      </p>
+                    </div>
+                  </div>
+
+                  {!showAddressForm && (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setShowAddressForm(true)
+                      }
+                      className="flex items-center gap-1.5 rounded-xl border border-amber-400/40 bg-amber-400/10 px-3.5 py-2 text-xs font-bold uppercase tracking-wider text-amber-300 hover:bg-amber-400 hover:text-black transition"
+                    >
+                      <Plus size={15} />
+
+                      Add New
+                    </button>
+                  )}
+                </div>
+
+                <div className="p-6">
+                  {/* =============================================
+                      SAVED ADDRESSES
+                  ============================================= */}
+
+                  {addresses.length > 0 &&
+                    !showAddressForm && (
+                      <div className="space-y-4">
+                        {addresses.map(
+                          (item) => {
+                            const selected =
+                              String(
+                                selectedAddressId
+                              ) ===
+                              String(
+                                item._id
+                              );
+
+                            return (
+                              <div
+                                key={item._id}
+                                className={`rounded-2xl border p-5 transition ${
+                                  selected
+                                    ? "border-amber-400 bg-amber-400/5 shadow-[0_0_15px_rgba(234,179,8,0.15)]"
+                                    : "border-white/10 bg-[#161a23]/60 hover:border-white/20"
+                                }`}
+                              >
+                                <div className="flex items-start gap-4">
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      setSelectedAddressId(
+                                        String(
+                                          item._id
+                                        )
+                                      )
+                                    }
+                                    className="pt-1"
+                                  >
+                                    <span
+                                      className={`w-5 h-5 rounded-full border flex items-center justify-center ${
+                                        selected
+                                          ? "border-amber-400 bg-amber-400/20"
+                                          : "border-gray-500"
+                                      }`}
+                                    >
+                                      {selected && (
+                                        <span className="w-2.5 h-2.5 bg-amber-400 rounded-full" />
+                                      )}
+                                    </span>
+                                  </button>
+
+                                  <div className="flex-1">
+                                    <div className="flex items-center justify-between gap-4">
+                                      <div>
+                                        <h4 className="font-bold text-sm text-white">
+                                          {
+                                            item.name
+                                          }
+                                        </h4>
+
+                                        <p className="text-xs text-amber-400/90 font-medium mt-0.5">
+                                          {
+                                            item.phone
+                                          }
+                                        </p>
+                                      </div>
+
+                                      <button
+                                        type="button"
+                                        onClick={() =>
+                                          handleDeleteAddress(
+                                            item._id
+                                          )
+                                        }
+                                        className="text-gray-400 hover:text-red-400 transition"
+                                        title="Delete address"
+                                      >
+                                        <Trash2
+                                          size={
+                                            17
+                                          }
+                                        />
+                                      </button>
+                                    </div>
+
+                                    <p className="text-xs text-gray-300 mt-3 leading-relaxed">
+                                      {
+                                        item.addressLine
+                                      }
+                                      ,{" "}
+                                      {
+                                        item.city
+                                      }
+                                      ,{" "}
+                                      {
+                                        item.state
+                                      }{" "}
+                                      -{" "}
+                                      {
+                                        item.pincode
+                                      }
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          }
+                        )}
+                      </div>
+                    )}
+
+                  {/* =============================================
+                      ADD ADDRESS FORM
+                  ============================================= */}
+
+                  {showAddressForm && (
+                    <form
+                      onSubmit={
+                        handleAddAddress
+                      }
+                      className="space-y-4"
+                    >
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">
+                            Full Name
+                          </label>
+
+                          <input
+                            type="text"
+                            name="name"
+                            value={
+                              address.name
+                            }
+                            onChange={
+                              handleAddressChange
+                            }
+                            placeholder="Enter full name"
+                            className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white outline-none focus:border-amber-400"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">
+                            Phone
+                          </label>
+
+                          <input
+                            type="tel"
+                            name="phone"
+                            value={
+                              address.phone
+                            }
+                            onChange={
+                              handleAddressChange
+                            }
+                            placeholder="Enter phone number"
+                            className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white outline-none focus:border-amber-400"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">
+                          Address
+                        </label>
+
+                        <textarea
+                          name="addressLine"
+                          value={
+                            address.addressLine
+                          }
+                          onChange={
+                            handleAddressChange
+                          }
+                          rows={3}
+                          placeholder="House / street / locality"
+                          className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white outline-none focus:border-amber-400 resize-none"
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                          <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">
+                            City
+                          </label>
+
+                          <input
+                            type="text"
+                            name="city"
+                            value={
+                              address.city
+                            }
+                            onChange={
+                              handleAddressChange
+                            }
+                            placeholder="City"
+                            className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white outline-none focus:border-amber-400"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">
+                            State
+                          </label>
+
+                          <input
+                            type="text"
+                            name="state"
+                            value={
+                              address.state
+                            }
+                            onChange={
+                              handleAddressChange
+                            }
+                            placeholder="State"
+                            className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white outline-none focus:border-amber-400"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">
+                            Pincode
+                          </label>
+
+                          <input
+                            type="text"
+                            name="pincode"
+                            value={
+                              address.pincode
+                            }
+                            onChange={
+                              handleAddressChange
+                            }
+                            placeholder="Pincode"
+                            className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white outline-none focus:border-amber-400"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="flex flex-wrap gap-3 pt-3">
+                        <button
+                          type="submit"
+                          className="rounded-xl bg-gradient-to-r from-amber-500 to-yellow-600 px-6 py-3 text-xs font-extrabold uppercase tracking-widest text-black shadow-lg shadow-amber-500/20 hover:from-amber-400 hover:to-yellow-500 transition"
+                        >
+                          Save Address
+                        </button>
+
+                        {addresses.length >
+                          0 && (
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setShowAddressForm(
+                                false
+                              )
+                            }
+                            className="rounded-xl border border-white/20 bg-white/5 px-6 py-3 text-xs font-bold uppercase tracking-widest text-gray-300 hover:border-amber-400 hover:text-white transition"
+                          >
+                            Cancel
+                          </button>
+                        )}
+                      </div>
+                    </form>
+                  )}
+                </div>
+              </section>
+
+              {/* =================================================
+                  PAYMENT METHOD
+              ================================================= */}
+
+              <section className="rounded-[24px] border border-white/10 bg-[#12151d] overflow-hidden shadow-xl">
+                <div className="px-6 py-5 border-b border-white/10 bg-[#161a23] flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-amber-400/20 border border-amber-400/40 text-amber-400 flex items-center justify-center">
+                    <CreditCard size={18} />
                   </div>
 
                   <div>
-                    <h3 className="font-semibold text-black">
-                      Delivery Address
+                    <h3 className="font-serif font-bold text-white uppercase tracking-wider text-sm">
+                      Payment Method
                     </h3>
 
-                    <p className="text-xs text-gray-500 mt-1">
-                      Where should we deliver your watch?
+                    <p className="text-xs text-gray-400 mt-0.5">
+                      Choose how you want to pay.
                     </p>
                   </div>
                 </div>
 
-                {!showAddressForm && (
+                <div className="p-6 space-y-4">
+                  {/* =============================================
+                      COD
+                  ============================================= */}
+
                   <button
                     type="button"
                     onClick={() =>
-                      setShowAddressForm(true)
+                      setPaymentMethod(
+                        "COD"
+                      )
                     }
-                    className="flex items-center gap-2 text-sm font-medium text-black hover:underline"
+                    className={`w-full rounded-2xl border p-5 text-left transition ${
+                      paymentMethod ===
+                      "COD"
+                        ? "border-amber-400 bg-amber-400/5 shadow-[0_0_15px_rgba(234,179,8,0.15)]"
+                        : "border-white/10 bg-[#161a23]/60 hover:border-white/20"
+                    }`}
                   >
-                    <Plus size={16} />
+                    <div className="flex items-center gap-4">
+                      <span
+                        className={`w-5 h-5 rounded-full border flex items-center justify-center ${
+                          paymentMethod ===
+                          "COD"
+                            ? "border-amber-400 bg-amber-400/20"
+                            : "border-gray-500"
+                        }`}
+                      >
+                        {paymentMethod ===
+                          "COD" && (
+                          <span className="w-2.5 h-2.5 bg-amber-400 rounded-full" />
+                        )}
+                      </span>
 
-                    Add New
-                  </button>
-                )}
-              </div>
+                      <div className="flex-1">
+                        <h4 className="font-bold text-sm text-white">
+                          Cash on Delivery
+                        </h4>
 
-              <div className="p-6">
-                {/* =============================================
-                    SAVED ADDRESSES
-                ============================================= */}
-
-                {addresses.length > 0 &&
-                  !showAddressForm && (
-                    <div className="space-y-4">
-                      {addresses.map(
-                        (item) => {
-                          const selected =
-                            String(
-                              selectedAddressId
-                            ) ===
-                            String(
-                              item._id
-                            );
-
-                          return (
-                            <div
-                              key={item._id}
-                              className={`border p-4 transition ${
-                                selected
-                                  ? "border-black"
-                                  : "border-gray-200"
-                              }`}
-                            >
-                              <div className="flex items-start gap-4">
-                                <button
-                                  type="button"
-                                  onClick={() =>
-                                    setSelectedAddressId(
-                                      String(
-                                        item._id
-                                      )
-                                    )
-                                  }
-                                  className="pt-1"
-                                >
-                                  <span
-                                    className={`w-5 h-5 rounded-full border flex items-center justify-center ${
-                                      selected
-                                        ? "border-black"
-                                        : "border-gray-400"
-                                    }`}
-                                  >
-                                    {selected && (
-                                      <span className="w-2.5 h-2.5 bg-black rounded-full" />
-                                    )}
-                                  </span>
-                                </button>
-
-                                <div className="flex-1">
-                                  <div className="flex items-center justify-between gap-4">
-                                    <div>
-                                      <h4 className="font-semibold text-sm text-black">
-                                        {
-                                          item.name
-                                        }
-                                      </h4>
-
-                                      <p className="text-xs text-gray-500 mt-1">
-                                        {
-                                          item.phone
-                                        }
-                                      </p>
-                                    </div>
-
-                                    <button
-                                      type="button"
-                                      onClick={() =>
-                                        handleDeleteAddress(
-                                          item._id
-                                        )
-                                      }
-                                      className="text-gray-400 hover:text-red-600 transition"
-                                      title="Delete address"
-                                    >
-                                      <Trash2
-                                        size={
-                                          17
-                                        }
-                                      />
-                                    </button>
-                                  </div>
-
-                                  <p className="text-sm text-gray-600 mt-3 leading-6">
-                                    {
-                                      item.addressLine
-                                    }
-                                    <br />
-
-                                    {
-                                      item.city
-                                    }
-                                    ,{" "}
-                                    {
-                                      item.state
-                                    }{" "}
-                                    -{" "}
-                                    {
-                                      item.pincode
-                                    }
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                          );
-                        }
-                      )}
-                    </div>
-                  )}
-
-                {/* =============================================
-                    ADD ADDRESS FORM
-                ============================================= */}
-
-                {showAddressForm && (
-                  <form
-                    onSubmit={
-                      handleAddAddress
-                    }
-                    className="space-y-5"
-                  >
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-xs font-medium text-gray-700 mb-2">
-                          Full Name
-                        </label>
-
-                        <input
-                          type="text"
-                          name="name"
-                          value={
-                            address.name
-                          }
-                          onChange={
-                            handleAddressChange
-                          }
-                          placeholder="Enter full name"
-                          className="w-full border border-gray-300 px-4 py-3 text-sm outline-none focus:border-black"
-                        />
+                        <p className="text-xs text-gray-400 mt-1">
+                          Pay when your order arrives.
+                        </p>
                       </div>
 
-                      <div>
-                        <label className="block text-xs font-medium text-gray-700 mb-2">
-                          Phone
-                        </label>
-
-                        <input
-                          type="tel"
-                          name="phone"
-                          value={
-                            address.phone
-                          }
-                          onChange={
-                            handleAddressChange
-                          }
-                          placeholder="Enter phone number"
-                          className="w-full border border-gray-300 px-4 py-3 text-sm outline-none focus:border-black"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-2">
-                        Address
-                      </label>
-
-                      <textarea
-                        name="addressLine"
-                        value={
-                          address.addressLine
-                        }
-                        onChange={
-                          handleAddressChange
-                        }
-                        rows={3}
-                        placeholder="House / street / locality"
-                        className="w-full border border-gray-300 px-4 py-3 text-sm outline-none focus:border-black resize-none"
+                      <Truck
+                        size={21}
+                        className="text-amber-400"
                       />
                     </div>
+                  </button>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                      <div>
-                        <label className="block text-xs font-medium text-gray-700 mb-2">
-                          City
-                        </label>
+                  {/* =============================================
+                      RAZORPAY
+                  ============================================= */}
 
-                        <input
-                          type="text"
-                          name="city"
-                          value={
-                            address.city
-                          }
-                          onChange={
-                            handleAddressChange
-                          }
-                          placeholder="City"
-                          className="w-full border border-gray-300 px-4 py-3 text-sm outline-none focus:border-black"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-xs font-medium text-gray-700 mb-2">
-                          State
-                        </label>
-
-                        <input
-                          type="text"
-                          name="state"
-                          value={
-                            address.state
-                          }
-                          onChange={
-                            handleAddressChange
-                          }
-                          placeholder="State"
-                          className="w-full border border-gray-300 px-4 py-3 text-sm outline-none focus:border-black"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-xs font-medium text-gray-700 mb-2">
-                          Pincode
-                        </label>
-
-                        <input
-                          type="text"
-                          name="pincode"
-                          value={
-                            address.pincode
-                          }
-                          onChange={
-                            handleAddressChange
-                          }
-                          placeholder="Pincode"
-                          className="w-full border border-gray-300 px-4 py-3 text-sm outline-none focus:border-black"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="flex flex-wrap gap-3 pt-2">
-                      <button
-                        type="submit"
-                        className="bg-black text-white px-6 py-3 text-sm font-medium hover:bg-gray-800 transition"
-                      >
-                        Save Address
-                      </button>
-
-                      {addresses.length >
-                        0 && (
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setShowAddressForm(
-                              false
-                            )
-                          }
-                          className="border border-gray-300 px-6 py-3 text-sm font-medium text-gray-700 hover:border-black hover:text-black transition"
-                        >
-                          Cancel
-                        </button>
-                      )}
-                    </div>
-                  </form>
-                )}
-              </div>
-            </section>
-
-            {/* =================================================
-                PAYMENT METHOD
-            ================================================= */}
-
-            <section className="bg-white border border-gray-200">
-              <div className="px-6 py-5 border-b border-gray-200 flex items-center gap-3">
-                <div className="w-9 h-9 bg-black text-white flex items-center justify-center">
-                  <CreditCard size={18} />
-                </div>
-
-                <div>
-                  <h3 className="font-semibold text-black">
-                    Payment Method
-                  </h3>
-
-                  <p className="text-xs text-gray-500 mt-1">
-                    Choose how you want to pay.
-                  </p>
-                </div>
-              </div>
-
-              <div className="p-6 space-y-4">
-                {/* =============================================
-                    COD
-                ============================================= */}
-
-                <button
-                  type="button"
-                  onClick={() =>
-                    setPaymentMethod(
-                      "COD"
-                    )
-                  }
-                  className={`w-full border p-5 text-left transition ${
-                    paymentMethod ===
-                    "COD"
-                      ? "border-black"
-                      : "border-gray-200 hover:border-gray-400"
-                  }`}
-                >
-                  <div className="flex items-center gap-4">
-                    <span
-                      className={`w-5 h-5 rounded-full border flex items-center justify-center ${
-                        paymentMethod ===
-                        "COD"
-                          ? "border-black"
-                          : "border-gray-400"
-                      }`}
-                    >
-                      {paymentMethod ===
-                        "COD" && (
-                        <span className="w-2.5 h-2.5 bg-black rounded-full" />
-                      )}
-                    </span>
-
-                    <div className="flex-1">
-                      <h4 className="font-semibold text-sm text-black">
-                        Cash on Delivery
-                      </h4>
-
-                      <p className="text-xs text-gray-500 mt-1">
-                        Pay when your order arrives.
-                      </p>
-                    </div>
-
-                    <Truck
-                      size={21}
-                      className="text-gray-500"
-                    />
-                  </div>
-                </button>
-
-                {/* =============================================
-                    RAZORPAY
-                ============================================= */}
-
-                <button
-                  type="button"
-                  onClick={() =>
-                    setPaymentMethod(
-                      "Razorpay"
-                    )
-                  }
-                  className={`w-full border p-5 text-left transition ${
-                    paymentMethod ===
-                    "Razorpay"
-                      ? "border-black"
-                      : "border-gray-200 hover:border-gray-400"
-                  }`}
-                >
-                  <div className="flex items-center gap-4">
-                    <span
-                      className={`w-5 h-5 rounded-full border flex items-center justify-center ${
-                        paymentMethod ===
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setPaymentMethod(
                         "Razorpay"
-                          ? "border-black"
-                          : "border-gray-400"
-                      }`}
-                    >
-                      {paymentMethod ===
-                        "Razorpay" && (
-                        <span className="w-2.5 h-2.5 bg-black rounded-full" />
-                      )}
-                    </span>
-
-                    <div className="flex-1">
-                      <h4 className="font-semibold text-sm text-black">
-                        Razorpay
-                      </h4>
-
-                      <p className="text-xs text-gray-500 mt-1">
-                        Pay securely using UPI,
-                        cards or net banking.
-                      </p>
-                    </div>
-
-                    <CreditCard
-                      size={21}
-                      className="text-gray-500"
-                    />
-                  </div>
-                </button>
-              </div>
-            </section>
-
-            {/* =================================================
-                SECURITY INFO
-            ================================================= */}
-
-            <div className="flex items-start gap-3 text-gray-500 px-1">
-              <ShieldCheck
-                size={18}
-                className="mt-0.5"
-              />
-
-              <p className="text-xs leading-5">
-                Your payment and personal
-                information are securely
-                protected during checkout.
-              </p>
-            </div>
-          </div>
-
-          {/* =================================================
-              RIGHT SIDE - ORDER SUMMARY
-          ================================================= */}
-
-          <aside className="lg:sticky lg:top-6 h-fit">
-            <div className="bg-white border border-gray-200">
-              <div className="px-6 py-5 border-b border-gray-200 flex items-center gap-3">
-                <div className="w-9 h-9 bg-black text-white flex items-center justify-center">
-                  <ShoppingBag size={18} />
-                </div>
-
-                <div>
-                  <h3 className="font-semibold text-black">
-                    Order Summary
-                  </h3>
-
-                  <p className="text-xs text-gray-500 mt-1">
-                    {cartItems.length}{" "}
-                    {cartItems.length === 1
-                      ? "item"
-                      : "items"}
-                  </p>
-                </div>
-              </div>
-
-              {/* =============================================
-                  PRODUCTS
-              ============================================= */}
-
-              <div className="p-6 space-y-5">
-                {cartItems.map(
-                  (item, index) => {
-                    const product =
-                      item.product;
-
-                    const price =
-                      getItemPrice(item);
-
-                    const quantity =
-                      Number(
-                        item.quantity || 0
-                      );
-
-                    const image =
-                      product?.images?.[0] ||
-                      product?.image ||
-                      "";
-
-                    return (
-                      <div
-                        key={
-                          item._id ||
-                          `${product?._id}-${index}`
-                        }
-                        className="flex gap-4"
+                      )
+                    }
+                    className={`w-full rounded-2xl border p-5 text-left transition ${
+                      paymentMethod ===
+                      "Razorpay"
+                        ? "border-amber-400 bg-amber-400/5 shadow-[0_0_15px_rgba(234,179,8,0.15)]"
+                        : "border-white/10 bg-[#161a23]/60 hover:border-white/20"
+                    }`}
+                  >
+                    <div className="flex items-center gap-4">
+                      <span
+                        className={`w-5 h-5 rounded-full border flex items-center justify-center ${
+                          paymentMethod ===
+                          "Razorpay"
+                            ? "border-amber-400 bg-amber-400/20"
+                            : "border-gray-500"
+                        }`}
                       >
-                        <div className="w-20 h-20 bg-[#F8F8F1] border border-gray-100 flex-shrink-0 overflow-hidden">
-                          {image ? (
-                            <img
-                              src={image}
-                              alt={
-                                product?.name ||
-                                "Watch"
-                              }
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
-                              No image
-                            </div>
-                          )}
-                        </div>
+                        {paymentMethod ===
+                          "Razorpay" && (
+                          <span className="w-2.5 h-2.5 bg-amber-400 rounded-full" />
+                        )}
+                      </span>
 
-                        <div className="flex-1 min-w-0">
-                          <h4 className="text-sm font-medium text-black truncate">
-                            {product?.name ||
-                              "Product"}
-                          </h4>
+                      <div className="flex-1">
+                        <h4 className="font-bold text-sm text-white">
+                          Razorpay
+                        </h4>
 
-                          {product?.brand && (
-                            <p className="text-xs text-gray-500 mt-1">
-                              {
-                                product.brand
-                              }
-                            </p>
-                          )}
-
-                          {item.size && (
-                            <p className="text-xs text-gray-500 mt-1">
-                              Size:{" "}
-                              {item.size}
-                            </p>
-                          )}
-
-                          <div className="flex items-center justify-between mt-2">
-                            <p className="text-xs text-gray-500">
-                              Qty:{" "}
-                              {quantity}
-                            </p>
-
-                            <p className="text-sm font-semibold text-black">
-                              ₹
-                              {(
-                                price *
-                                quantity
-                              ).toLocaleString(
-                                "en-IN"
-                              )}
-                            </p>
-                          </div>
-                        </div>
+                        <p className="text-xs text-gray-400 mt-1">
+                          Pay securely using UPI,
+                          cards or net banking.
+                        </p>
                       </div>
-                    );
-                  }
-                )}
-              </div>
 
-              {/* =============================================
-                  PRICE
-              ============================================= */}
-
-              <div className="border-t border-gray-200 px-6 py-5 space-y-3">
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">
-                    Subtotal
-                  </span>
-
-                  <span className="text-black">
-                    ₹
-                    {subtotal.toLocaleString(
-                      "en-IN"
-                    )}
-                  </span>
+                      <CreditCard
+                        size={21}
+                        className="text-amber-400"
+                      />
+                    </div>
+                  </button>
                 </div>
+              </section>
 
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">
-                    Shipping
-                  </span>
+              {/* =================================================
+                  SECURITY INFO
+              ================================================= */}
 
-                  <span className="text-black">
-                    {shipping === 0
-                      ? "FREE"
-                      : `₹${shipping.toLocaleString(
-                          "en-IN"
-                        )}`}
-                  </span>
-                </div>
+              <div className="flex items-start gap-3 text-gray-400 px-2">
+                <ShieldCheck
+                  size={18}
+                  className="mt-0.5 text-amber-400"
+                />
 
-                <div className="border-t border-gray-200 pt-4 flex justify-between">
-                  <span className="font-semibold text-black">
-                    Total
-                  </span>
-
-                  <span className="font-semibold text-lg text-black">
-                    ₹
-                    {totalAmount.toLocaleString(
-                      "en-IN"
-                    )}
-                  </span>
-                </div>
-              </div>
-
-              {/* =============================================
-                  PLACE ORDER BUTTON
-              ============================================= */}
-
-              <div className="px-6 pb-6">
-                <button
-                  type="button"
-                  onClick={
-                    handlePlaceOrder
-                  }
-                  disabled={
-                    placingOrder ||
-                    !selectedAddressId ||
-                    cartItems.length === 0
-                  }
-                  className="w-full bg-black text-white py-4 text-sm font-medium hover:bg-gray-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {placingOrder
-                    ? paymentMethod ===
-                      "Razorpay"
-                      ? "Processing Payment..."
-                      : "Placing Order..."
-                    : paymentMethod ===
-                      "Razorpay"
-                    ? `Pay ₹${totalAmount.toLocaleString(
-                        "en-IN"
-                      )}`
-                    : "Place Order"}
-                </button>
-
-                <p className="text-[11px] text-gray-500 text-center mt-4 leading-5">
-                  By placing your order,
-                  you agree to our terms and
-                  conditions.
+                <p className="text-xs leading-relaxed">
+                  Your payment and personal
+                  information are securely
+                  protected during checkout with modern encryption standards.
                 </p>
               </div>
             </div>
-          </aside>
-        </div>
-      </main>
-    </div>
+
+            {/* =================================================
+                RIGHT SIDE - ORDER SUMMARY
+            ================================================= */}
+
+            <aside className="lg:sticky lg:top-6 h-fit">
+              <div className="rounded-[24px] border-2 border-amber-400/40 bg-[#12151d] overflow-hidden shadow-2xl gold-blink-card">
+                <div className="px-6 py-5 border-b border-white/10 bg-[#161a23] flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-amber-400/20 border border-amber-400/40 text-amber-400 flex items-center justify-center">
+                    <ShoppingBag size={18} />
+                  </div>
+
+                  <div>
+                    <h3 className="font-serif font-bold text-white uppercase tracking-wider text-sm">
+                      Order Summary
+                    </h3>
+
+                    <p className="text-xs text-gray-400 mt-0.5">
+                      {cartItems.length}{" "}
+                      {cartItems.length === 1
+                        ? "item"
+                        : "items"}
+                    </p>
+                  </div>
+                </div>
+
+                {/* =============================================
+                    PRODUCTS
+                ============================================= */}
+
+                <div className="p-6 space-y-4 max-h-[340px] overflow-y-auto">
+                  {cartItems.map(
+                    (item, index) => {
+                      const product =
+                        item.product;
+
+                      const price =
+                        getItemPrice(item);
+
+                      const quantity =
+                        Number(
+                          item.quantity || 0
+                        );
+
+                      const image =
+                        product?.images?.[0] ||
+                        product?.image ||
+                        "";
+
+                      return (
+                        <div
+                          key={
+                            item._id ||
+                            `${product?._id}-${index}`
+                          }
+                          className="flex gap-4 p-3 rounded-2xl bg-[#161a23]/60 border border-white/5"
+                        >
+                          <div className="w-16 h-16 bg-black rounded-xl border border-white/10 flex-shrink-0 overflow-hidden">
+                            {image ? (
+                              <img
+                                src={image}
+                                alt={
+                                  product?.name ||
+                                  "Watch"
+                                }
+                                className="w-full h-full object-contain p-1"
+                              />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-gray-500 text-[10px]">
+                                No image
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="flex-1 min-w-0">
+                            <h4 className="text-xs font-bold text-white truncate uppercase tracking-wider">
+                              {product?.name ||
+                                "Product"}
+                            </h4>
+
+                            {product?.brand && (
+                              <p className="text-[10px] text-gray-400 mt-0.5">
+                                {
+                                  product.brand
+                                }
+                              </p>
+                            )}
+
+                            {item.size && (
+                              <p className="text-[10px] text-gray-400 mt-0.5">
+                                Size:{" "}
+                                {item.size}
+                              </p>
+                            )}
+
+                            <div className="flex items-center justify-between mt-2">
+                              <p className="text-[10px] text-gray-400 font-semibold uppercase">
+                                Qty:{" "}
+                                {quantity}
+                              </p>
+
+                              <p className="text-xs font-black text-amber-400">
+                                ₹
+                                {(
+                                  price *
+                                  quantity
+                                ).toLocaleString(
+                                  "en-IN"
+                                )}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    }
+                  )}
+                </div>
+
+                {/* =============================================
+                    PRICE
+                ============================================= */}
+
+                <div className="border-t border-white/10 px-6 py-5 space-y-3 bg-[#161a23]/40">
+                  <div className="flex justify-between text-xs font-medium text-gray-300">
+                    <span className="text-gray-400">
+                      Subtotal
+                    </span>
+
+                    <span className="text-white">
+                      ₹
+                      {subtotal.toLocaleString(
+                        "en-IN"
+                      )}
+                    </span>
+                  </div>
+
+                  <div className="flex justify-between text-xs font-medium text-gray-300">
+                    <span className="text-gray-400">
+                      Shipping
+                    </span>
+
+                    <span className="text-emerald-400 font-bold uppercase">
+                      {shipping === 0
+                        ? "FREE"
+                        : `₹${shipping}`}
+                    </span>
+                  </div>
+
+                  <div className="border-t border-white/10 pt-4 flex justify-between items-center">
+                    <span className="font-bold text-white text-sm uppercase tracking-wider">
+                      Total
+                    </span>
+
+                    <span className="font-black text-lg text-amber-400">
+                      ₹
+                      {totalAmount.toLocaleString(
+                        "en-IN"
+                      )}
+                    </span>
+                  </div>
+                </div>
+
+                {/* =============================================
+                    PLACE ORDER BUTTON
+                ============================================= */}
+
+                <div className="p-6 pt-2 bg-[#161a23]/40">
+                  <button
+                    type="button"
+                    onClick={
+                      handlePlaceOrder
+                    }
+                    disabled={
+                      placingOrder ||
+                      !selectedAddressId ||
+                      cartItems.length === 0
+                    }
+                    className="w-full rounded-xl bg-gradient-to-r from-amber-500 to-yellow-600 py-4 text-xs font-extrabold uppercase tracking-widest text-black shadow-lg shadow-amber-500/30 hover:from-amber-400 hover:to-yellow-500 transition disabled:opacity-40 disabled:cursor-not-allowed"
+                  >
+                    {placingOrder
+                      ? paymentMethod ===
+                        "Razorpay"
+                        ? "Processing Payment..."
+                        : "Placing Order..."
+                      : paymentMethod ===
+                        "Razorpay"
+                      ? `Pay ₹${totalAmount.toLocaleString(
+                          "en-IN"
+                        )}`
+                      : "Place Order"}
+                  </button>
+
+                  <p className="text-[10px] text-gray-400 text-center mt-4 leading-relaxed">
+                    By placing your order,
+                    you agree to our luxury terms &
+                    conditions.
+                  </p>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </main>
+      </div>
+    </>
   );
 }
